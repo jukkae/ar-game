@@ -28,14 +28,31 @@ public class FlyCamera : MonoBehaviour
     private Vector3 lastMouse;
     private float totalRun = 1.0f;
 
+    public enum LookMode { MOUSE, KEYBOARD };
+    public LookMode lookMode = LookMode.MOUSE;
+    public float keyLookSpeed = 2.0f;
+    private float yaw = 0.0f;
+    private float pitch = 0.0f;
+
     void Update()
     {
-        lastMouse = Input.mousePosition - lastMouse;
-        lastMouse = new Vector3(-lastMouse.y * camSens, lastMouse.x * camSens, 0);
-        lastMouse = new Vector3(transform.eulerAngles.x + lastMouse.x, transform.eulerAngles.y + lastMouse.y, 0);
-        transform.eulerAngles = lastMouse;
-        lastMouse = Input.mousePosition;
-        // Mouse camera angle done.
+        if (lookMode == LookMode.MOUSE)
+        {
+            lastMouse = Input.mousePosition - lastMouse;
+            lastMouse = new Vector3(-lastMouse.y * camSens, lastMouse.x * camSens, 0);
+            lastMouse = new Vector3(transform.eulerAngles.x + lastMouse.x, transform.eulerAngles.y + lastMouse.y, 0);
+            transform.eulerAngles = lastMouse;
+            lastMouse = Input.mousePosition;
+            // Mouse camera angle done.
+        }
+        else if (lookMode == LookMode.KEYBOARD)
+        {
+            yaw += keyLookSpeed * Input.GetAxis("Horizontal");
+            pitch -= keyLookSpeed * Input.GetAxis("Vertical");
+            transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+
+
+        }
 
         // Keyboard commands
         Vector3 p = GetBaseInput();

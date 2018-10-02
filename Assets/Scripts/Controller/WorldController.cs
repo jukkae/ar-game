@@ -80,7 +80,10 @@ public class WorldController : MonoBehaviour
     private void Update()
     {
         if (paused || gameID.IsNullOrEmpty())
+        {
+            //Debug.Log("paused or null or empty");
             return;
+        }
         AddCollectables();
         UpdateGameEquipment();
         UpdateMovingGameEquipment();
