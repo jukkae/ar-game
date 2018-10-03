@@ -42,7 +42,7 @@ public class Item : MonoBehaviour
     /**<summary> Destroy the Item data and object </summary>*/
     virtual public void Destroy()
     {
-        if (data) Destroy(data);
+        // if (data) Destroy(data); // not needed
         if (gameObject) Destroy(gameObject);
     }
 }

@@ -22,6 +22,7 @@ public class EquipmentData : ItemData
     /**<summary> Create new Item class </summary>*/
     public EquipmentData(string id, string itemPrefab, string name, string description, Vector3 position, Quaternion rotation, int value, bool local, string owner, long timestamp, int energyCost, float useRate, float hitForce)
     {
+        Debug.Log("EquipmentData ctor with params called");
         this.id = id;
         this.itemPrefab = itemPrefab;
         this.name = name;

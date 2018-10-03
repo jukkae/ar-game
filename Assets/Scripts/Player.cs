@@ -56,6 +56,8 @@ public class Player : MonoBehaviour {
 
         public InventoryItem(ItemData itemData, int count)
         {
+            Debug.Log("New inventory item data:");
+            Debug.Log(itemData);
             this.itemData = itemData;
             this.count = count;
         }
@@ -511,6 +513,11 @@ public class Player : MonoBehaviour {
     /**<summary> Called when player collects an Item </summary>*/
     public void OnItemCollected(ItemData item)
     {
+        Debug.Log("Item collected:");
+        Debug.Log(item);
+        Debug.Log(item.name);
+        Debug.Log(item.description);
+        Debug.Log(item.value);
         item = Instantiate(item);
         // Reward exp only if the object isn't owned by player
         if (item.owner != name)

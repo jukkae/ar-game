@@ -256,10 +256,18 @@ public class WorldController : MonoBehaviour
             NativeMethods.ShowToast("No games found on server");
             return;
         }
+        // TODO dirty hack to get started without server-side changes
+        Array.Resize(ref games, games.Length + 1);
+        var eclipseRealmGame = new Parser.Game();
+        eclipseRealmGame.name = "Eclipse Realm";
+        eclipseRealmGame.description = "Treasure hunt-style game with bells and whistles";
+        eclipseRealmGame.id = "42";
+        games[2] = eclipseRealmGame;
         DialogManager.ShowSimple("Select game", games.Select(b => b.name + " " + b.description).ToArray(), false, (int selectedIndex) => {
             //ToastManager.Show(games[selectedIndex].name + " selected");
 
             gameID = games[selectedIndex].id;
+            Debug.Log("game id: " + gameID);
             SetupWorld(gameID);
         });
     }
