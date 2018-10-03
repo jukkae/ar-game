@@ -64,6 +64,8 @@ public class WorldController : MonoBehaviour
         }
     }
 
+    private EclipseRealm eclipseRealm;
+
     private void Start()
     {
         thisRef = this;
@@ -75,6 +77,7 @@ public class WorldController : MonoBehaviour
         //SetupWorld(new Area());
 #if UNITY_EDITOR
 #endif
+        eclipseRealm = GetComponent<EclipseRealm>();
     }
 
     private void Update()
@@ -271,7 +274,14 @@ public class WorldController : MonoBehaviour
 
             gameID = games[selectedIndex].id;
             Debug.Log("game id: " + gameID);
-            SetupWorld(gameID);
+            if(gameID != "42")
+            {
+                SetupWorld(gameID);
+            }
+            if(gameID == "42") {
+                eclipseRealm.InitializeRealm(this);
+                return;
+            }
         });
     }
 
