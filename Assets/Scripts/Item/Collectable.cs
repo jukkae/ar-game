@@ -43,13 +43,6 @@ public class Collectable : Item
     /**<summary> Send message to collector (player) </summary>*/
     virtual public void PickupMessage (GameObject collector)
     {
-        Debug.Log("PickupMessage");
-        Debug.Log(data);
-        Debug.Log(data.name);
-        Debug.Log(data.description);
-        Debug.Log(data.value);
-        Debug.Log("Collector: ");
-        Debug.Log(collector);
         collector.SendMessage("OnItemCollected", data, SendMessageOptions.DontRequireReceiver);
     }
 }

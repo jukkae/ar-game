@@ -17,7 +17,6 @@ public abstract class PlayerEquipment : Collectable
     /**<summary> Show Item information and available actions </summary>*/
     override public void Interact(GameObject caller)
     {
-        Debug.Log("Interacted");
         DialogManager.ShowAlert(data.name,
             data.description +
             "\nValue: " + data.value +
