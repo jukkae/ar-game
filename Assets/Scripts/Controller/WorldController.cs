@@ -84,18 +84,21 @@ public class WorldController : MonoBehaviour
             //Debug.Log("paused or null or empty");
             return;
         }
-        AddCollectables();
-        UpdateGameEquipment();
-        UpdateMovingGameEquipment();
-        if (Time.time - lastObjectUpdateTime > App.config.locationRefreshRate)
-        {
-            lastObjectUpdateTime = Time.time;
-            UpdateObjects();
+        if(gameID != "42") { // TODO dirty hack
+            AddCollectables();
+            UpdateGameEquipment();
+            UpdateMovingGameEquipment();
+            if (Time.time - lastObjectUpdateTime > App.config.locationRefreshRate)
+            {
+                lastObjectUpdateTime = Time.time;
+                UpdateObjects();
 #pragma warning disable 4014
-            ServerAPI.GetItems(gameID);
-            // -> OnGetItemsResponse
+                ServerAPI.GetItems(gameID);
+                // -> OnGetItemsResponse
 #pragma warning restore 4014
+            }
         }
+        
     }
 
     /**<summary> Pause world state </summary>*/
@@ -376,16 +379,19 @@ public class WorldController : MonoBehaviour
     /**<summary> Add Items from server, called when GetItems finishes </summary>*/
     public void OnGetItemsResponse(bool success, List<ItemData> items)
     {
-        foreach (ItemData obj in items)
+        if (success)
         {
-            obj.local = false;
-            // Add new object if it doesn't exist in world
-            if (!this.items.Exists(x => x.id == obj.id))
+            foreach (ItemData obj in items)
+            {
+                obj.local = false;
+                // Add new object if it doesn't exist in world
+                if (!this.items.Exists(x => x.id == obj.id))
 #pragma warning disable 4014
-                AddItem(obj, false);
+                    AddItem(obj, false);
 #pragma warning restore 4014
+            }
+            UpdateObjects();
         }
-        UpdateObjects();
     }
 
     /**<summary> Called when SetItems finishes </summary>*/
