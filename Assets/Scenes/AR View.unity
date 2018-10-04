@@ -1053,7 +1053,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 7.999996, y: 0}
+  m_AnchoredPosition: {x: 8.000042, y: 0}
   m_SizeDelta: {x: 190, y: 190}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &368881917
@@ -2016,7 +2016,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &586450768
 Transform:
   m_ObjectHideFlags: 0
@@ -2449,7 +2449,7 @@ MonoBehaviour:
   mainCamera: {fileID: 896679035}
   trackedPlaneVisualiser: {fileID: 1654175882956584, guid: bf486140a89293244832334fe7dd4a09,
     type: 2}
-  disableARControl: 0
+  disableARControl: 1
 --- !u!114 &627916106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3826,6 +3826,8 @@ GameObject:
   - component: {fileID: 998914416}
   - component: {fileID: 998914414}
   - component: {fileID: 998914417}
+  - component: {fileID: 998914419}
+  - component: {fileID: 998914418}
   m_Layer: 10
   m_Name: Main Camera / Player
   m_TagString: MainCamera
@@ -3922,6 +3924,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e3ff46081a3c1f4399b6b290c20d369, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &998914418
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 998914412}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.3
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.6, z: 0}
+--- !u!114 &998914419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 998914412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 124cc4e0856a69c418c2f0bf333f284e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1067660538

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Item
   - MaterialButtonLayer
+  - Eclipse Item
   layers:
   - Default
   - TransparentFX
