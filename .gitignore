@@ -34,3 +34,7 @@ Builds/
 
 # Blender backups
 *.blend1
+
+# Asset packages
+Coins Sfx/
+Coins Sfx.meta
