@@ -38,9 +38,10 @@ public class EclipseRealm : MonoBehaviour {
 
     void PlaceCoins()
     {
-        for(int x = 0; x < 10; x++)
+        Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+        for(int x = Mathf.CeilToInt(areaBounds.min.x); x < Mathf.FloorToInt(areaBounds.max.x); x++)
         {
-            for(int z = 0; z < 10; z++)
+            for(int z = Mathf.CeilToInt(areaBounds.min.z); z < Mathf.FloorToInt(areaBounds.max.z); z++)
             {
                 Instantiate(coinPrefab, new Vector3(x, 1.0f, z), Quaternion.Euler(0, 0, 90));
             }

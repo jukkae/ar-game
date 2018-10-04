@@ -2449,7 +2449,7 @@ MonoBehaviour:
   mainCamera: {fileID: 896679035}
   trackedPlaneVisualiser: {fileID: 1654175882956584, guid: bf486140a89293244832334fe7dd4a09,
     type: 2}
-  disableARControl: 1
+  disableARControl: 0
 --- !u!114 &627916106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5020,6 +5020,7 @@ GameObject:
   - component: {fileID: 1427244619}
   - component: {fileID: 1427244621}
   - component: {fileID: 1427244620}
+  - component: {fileID: 1427244622}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -5096,6 +5097,19 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 4352
+--- !u!114 &1427244622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1427244618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa94755fc5f9ea1429d8a4a2b8ddc9b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshDebugMaterial: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  coinPrefab: {fileID: 1203825086308630, guid: 157ba0b1f0f52e147aa83c63c974301c, type: 2}
 --- !u!1 &1449211256
 GameObject:
   m_ObjectHideFlags: 0
