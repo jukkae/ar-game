@@ -43,8 +43,18 @@ public class EclipseRealm : MonoBehaviour {
         {
             for(int z = Mathf.CeilToInt(areaBounds.min.z); z < Mathf.FloorToInt(areaBounds.max.z); z++)
             {
-                Instantiate(coinPrefab, new Vector3(x, 1.0f, z), Quaternion.Euler(0, 0, 90));
+                Vector3 position = new Vector3(x, 1.0f, z);
+                if (!IsInsideOfMesh(position, obstacleMesh))
+                {
+                    GameObject coin = Instantiate(coinPrefab, position, Quaternion.Euler(0, 0, 90));
+                    coin.transform.parent = transform;
+                }
             }
         }
+    }
+
+    bool IsInsideOfMesh(Vector3 position, GameObject mesh)
+    {
+        return false; // TODO implement
     }
 }
