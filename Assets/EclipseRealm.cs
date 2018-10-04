@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 
 // Main controller class for Eclipse Realm game
@@ -44,7 +45,7 @@ public class EclipseRealm : MonoBehaviour {
             for(int z = Mathf.CeilToInt(areaBounds.min.z); z < Mathf.FloorToInt(areaBounds.max.z); z++)
             {
                 Vector3 position = new Vector3(x, 1.0f, z);
-                if (!IsInsideOfMesh(position, obstacleMesh))
+                if (IsReachable(position))
                 {
                     GameObject coin = Instantiate(coinPrefab, position, Quaternion.Euler(0, 0, 90));
                     coin.transform.parent = transform;
@@ -53,8 +54,17 @@ public class EclipseRealm : MonoBehaviour {
         }
     }
 
-    bool IsInsideOfMesh(Vector3 position, GameObject mesh)
+    bool IsReachable(Vector3 position) // TODO quick-and-dirty heuristic, doesn't yet actually check if reachable, only if on open floor
     {
-        return false; // TODO implement
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(position, out hit, 1.0f, NavMesh.AllAreas))
+        {
+            //Debug.Log("Position valid, hit mask: " + hit.mask + ", position of hit: " + hit.position + ", normal at hit: " + hit.normal);
+            if(hit.position.y < 0.5) // Empirical constant: If higher, then hit on ceiling
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

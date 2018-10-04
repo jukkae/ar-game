@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 23254047178666910}
   - component: {fileID: 136396299427954198}
   - component: {fileID: 114801880886812328}
+  - component: {fileID: 114399103052682082}
   m_Layer: 0
   m_Name: Eclipse Coin
   m_TagString: Eclipse Item
@@ -85,6 +86,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1203825086308630}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114399103052682082
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1203825086308630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f02c209e3117e0a4999c1f930e3349e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collectSound: {fileID: 8300000, guid: 234654f6a5c784369b65a39251d8ddb8, type: 3}
 --- !u!114 &114801880886812328
 MonoBehaviour:
   m_ObjectHideFlags: 1
