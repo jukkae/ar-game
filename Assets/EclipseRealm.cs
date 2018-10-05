@@ -40,6 +40,7 @@ public class EclipseRealm : MonoBehaviour {
     void PlaceCoins()
     {
         Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+        int numberOfCoins = 0;
         for(int x = Mathf.CeilToInt(areaBounds.min.x); x < Mathf.FloorToInt(areaBounds.max.x); x++)
         {
             for(int z = Mathf.CeilToInt(areaBounds.min.z); z < Mathf.FloorToInt(areaBounds.max.z); z++)
@@ -48,10 +49,12 @@ public class EclipseRealm : MonoBehaviour {
                 if (IsReachable(position))
                 {
                     GameObject coin = Instantiate(coinPrefab, position, Quaternion.Euler(0, 0, 90));
+                    numberOfCoins++;
                     coin.transform.parent = transform;
                 }
             }
         }
+        FindObjectOfType<UIController>().SetTotalNumberOfEclipseCoins(numberOfCoins);
     }
 
     bool IsReachable(Vector3 position) // TODO quick-and-dirty heuristic, doesn't yet actually check if reachable, only if on open floor

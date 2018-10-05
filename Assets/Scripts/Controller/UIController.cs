@@ -60,10 +60,12 @@ public class UIController : MonoBehaviour
         defaultCanvas.transform.Find("Player UI").gameObject.SetActive(false);
         defaultCanvas.transform.Find("Inventory").gameObject.SetActive(false);
         defaultCanvas.transform.Find("Equipped Items").gameObject.SetActive(false);
+        defaultCanvas.transform.Find("Eclipse Realm UI").gameObject.SetActive(true);
     }
 
     public void DisableEclipseRealmUI()
     {
+        defaultCanvas.transform.Find("Eclipse Realm UI").gameObject.SetActive(false);
         defaultCanvas.transform.Find("Player UI").gameObject.SetActive(true);
         defaultCanvas.transform.Find("Inventory").gameObject.SetActive(true);
         defaultCanvas.transform.Find("Equipped Items").gameObject.SetActive(true);
@@ -224,4 +226,13 @@ public class UIController : MonoBehaviour
         }*/
     }
 
+    public void SetTotalNumberOfEclipseCoins(int n)
+    {
+        defaultCanvas.transform.Find("Eclipse Realm UI/Player Stats/Total coins text").GetComponent<Text>().text = "/ " + n;
+    }
+
+    public void SetCurrentNumberOfEclipseCoins(int n)
+    {
+        defaultCanvas.transform.Find("Eclipse Realm UI/Player Stats/Current coins text").GetComponent<Text>().text = n.ToString();
+    }
 }
