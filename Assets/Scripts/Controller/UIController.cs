@@ -55,8 +55,22 @@ public class UIController : MonoBehaviour
         ChangeUI(StateManager.sceneState);
     }
 
+    public void EnableEclipseRealmUI()
+    {
+        defaultCanvas.transform.Find("Player UI").gameObject.SetActive(false);
+        defaultCanvas.transform.Find("Inventory").gameObject.SetActive(false);
+        defaultCanvas.transform.Find("Equipped Items").gameObject.SetActive(false);
+    }
+
+    public void DisableEclipseRealmUI()
+    {
+        defaultCanvas.transform.Find("Player UI").gameObject.SetActive(true);
+        defaultCanvas.transform.Find("Inventory").gameObject.SetActive(true);
+        defaultCanvas.transform.Find("Equipped Items").gameObject.SetActive(true);
+    }
+
     /**<summary> Change UI canvas between default and minigame </summary>*/
-    public void ChangeUI(SceneState state)
+    public void ChangeUI(SceneState state) // TODO enabling and disabling Eclipse Realm UI should happen here instead
     {
         uiAnimationSeq.Kill(false);
         uiAnimationSeq = DOTween.Sequence();

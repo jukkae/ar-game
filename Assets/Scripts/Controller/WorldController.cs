@@ -277,9 +277,11 @@ public class WorldController : MonoBehaviour
             if(gameID != "42")
             {
                 SetupWorld(gameID);
+                FindObjectOfType<UIController>().DisableEclipseRealmUI();
             }
             if(gameID == "42") {
                 eclipseRealm.InitializeRealm(this);
+                FindObjectOfType<UIController>().EnableEclipseRealmUI();
                 return;
             }
         });
