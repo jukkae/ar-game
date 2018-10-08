@@ -11,6 +11,7 @@ public class EclipseRealm : MonoBehaviour {
     public Material meshDebugMaterial;
     GameObject obstacleMesh;
     public GameObject coinPrefab;
+    public GameObject coinsParent;
 
     public GameObject enemyPrefab;
 
@@ -53,7 +54,7 @@ public class EclipseRealm : MonoBehaviour {
                 {
                     GameObject coin = Instantiate(coinPrefab, position, Quaternion.Euler(0, 0, 90));
                     numberOfCoins++;
-                    coin.transform.parent = transform;
+                    coin.transform.parent = coinsParent.transform;
                 }
             }
         }
@@ -80,6 +81,10 @@ public class EclipseRealm : MonoBehaviour {
                 collider.center = new Vector3(0f, 0.44f, 0f);
 
                 Rigidbody rb = enemy.AddComponent(typeof(Rigidbody)) as Rigidbody;
+
+                NavMeshAgent agent = enemy.AddComponent(typeof(NavMeshAgent)) as NavMeshAgent;
+
+                //agent.destination = new Vector3(x + 10, y, z + 10);
 
                 enemy.transform.parent = transform;
                 Debug.Log("OK!");

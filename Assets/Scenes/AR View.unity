@@ -4266,6 +4266,34 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.49, y: 0.35, z: 0.37}
   m_Center: {x: 0, y: 0, z: 0.4}
+--- !u!1 &1026476359
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1026476360}
+  m_Layer: 0
+  m_Name: Eclipse Coins
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1026476360
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1026476359}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1427244619}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1067660538
 GameObject:
   m_ObjectHideFlags: 0
@@ -5458,6 +5486,7 @@ Transform:
   - {fileID: 613561988}
   - {fileID: 1337110437}
   - {fileID: 1302301783}
+  - {fileID: 1026476360}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5527,6 +5556,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshDebugMaterial: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   coinPrefab: {fileID: 1203825086308630, guid: 157ba0b1f0f52e147aa83c63c974301c, type: 2}
+  coinsParent: {fileID: 1026476359}
   enemyPrefab: {fileID: 1517330249523152, guid: f0612f9ade4945544b78e7b155ade161,
     type: 2}
 --- !u!1 &1449211256
