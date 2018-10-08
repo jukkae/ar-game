@@ -14,6 +14,8 @@ public class EclipseRealm : MonoBehaviour {
     public GameObject coinsParent;
 
     public GameObject enemyPrefab;
+    private GameObject enemy;
+    int counter = 0; // TODO for dev purposes only, remove
 
 	void Start () {
 		
@@ -22,7 +24,26 @@ public class EclipseRealm : MonoBehaviour {
 	void Update () {
 		if(initialized)
         {
-
+            if (counter == 0) // this code is shit
+            {
+                while(true) // TODO timeout at some point
+                {
+                    Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+                    float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
+                    float y = 0.15f;
+                    float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
+                    Vector3 position = new Vector3(x, y, z);
+                    Debug.Log("Trying destination " + position);
+                    if (IsReachable(position))
+                    {
+                        enemy.GetComponent<NavMeshAgent>().destination = position;
+                        Debug.Log("New destination: " + position);
+                        break;
+                    }
+                }
+            }
+            counter++;
+            if (counter >= 600) counter = 0;
         }
 	}
 
@@ -73,7 +94,7 @@ public class EclipseRealm : MonoBehaviour {
             Debug.Log("Trying location " + position);
             if(IsReachable(position)) // TODO this needs a better chceck because of colliders etc
             {
-                GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.Euler(0, 0, 0));
+                enemy = Instantiate(enemyPrefab, position, Quaternion.Euler(0, 0, 0));
                 enemy.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 
                 BoxCollider collider = enemy.AddComponent(typeof(BoxCollider)) as BoxCollider;
