@@ -12,6 +12,8 @@ public class EclipseRealm : MonoBehaviour {
     GameObject obstacleMesh;
     public GameObject coinPrefab;
 
+    public GameObject enemyPrefab;
+
 	void Start () {
 		
 	}
@@ -32,6 +34,7 @@ public class EclipseRealm : MonoBehaviour {
             obstacleMesh.GetComponent<Renderer>().material = meshDebugMaterial;
 
         PlaceCoins();
+        PlaceEnemy();
 
         initialized = true;
         Debug.Log("Eclipse Realm initialized");
@@ -55,6 +58,26 @@ public class EclipseRealm : MonoBehaviour {
             }
         }
         FindObjectOfType<UIController>().SetTotalNumberOfEclipseCoins(numberOfCoins);
+    }
+
+    void PlaceEnemy()
+    {
+        Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+        while(true) // TODO timeout at some point
+        {
+            float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
+            float y = 0.15f;
+            float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
+            Vector3 position = new Vector3(x, y, z);
+            Debug.Log("Trying location " + position);
+            if(IsReachable(position))
+            {
+                GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.Euler(0, 0, 0));
+                enemy.transform.parent = transform;
+                Debug.Log("OK!");
+                return;
+            }
+        }
     }
 
     bool IsReachable(Vector3 position) // TODO quick-and-dirty heuristic, doesn't yet actually check if reachable, only if on open floor

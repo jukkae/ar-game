@@ -5527,6 +5527,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshDebugMaterial: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   coinPrefab: {fileID: 1203825086308630, guid: 157ba0b1f0f52e147aa83c63c974301c, type: 2}
+  enemyPrefab: {fileID: 1517330249523152, guid: f0612f9ade4945544b78e7b155ade161,
+    type: 2}
 --- !u!1 &1449211256
 GameObject:
   m_ObjectHideFlags: 0
