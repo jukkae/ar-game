@@ -73,6 +73,7 @@ public class EclipseRealm : MonoBehaviour {
             if(IsReachable(position)) // TODO this needs a better chceck because of colliders etc
             {
                 GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.Euler(0, 0, 0));
+                enemy.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 
                 BoxCollider collider = enemy.AddComponent(typeof(BoxCollider)) as BoxCollider;
                 collider.size = new Vector3(3.47f, 1f, 2.46f);
