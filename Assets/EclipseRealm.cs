@@ -73,6 +73,11 @@ public class EclipseRealm : MonoBehaviour {
             if(IsReachable(position))
             {
                 GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.Euler(0, 0, 0));
+                
+                BoxCollider collider = enemy.AddComponent(typeof(BoxCollider)) as BoxCollider;
+                collider.size = new Vector3(3.47f, 1f, 2.46f);
+                collider.center = new Vector3(0f, 0.44f, 0f);
+
                 enemy.transform.parent = transform;
                 Debug.Log("OK!");
                 return;
