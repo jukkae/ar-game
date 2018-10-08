@@ -83,6 +83,7 @@ public class EclipseRealm : MonoBehaviour {
                 Rigidbody rb = enemy.AddComponent(typeof(Rigidbody)) as Rigidbody;
 
                 NavMeshAgent agent = enemy.AddComponent(typeof(NavMeshAgent)) as NavMeshAgent;
+                agent.areaMask = 1; // TODO why though
 
                 //agent.destination = new Vector3(x + 10, y, z + 10);
 
