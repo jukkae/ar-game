@@ -235,4 +235,14 @@ public class UIController : MonoBehaviour
     {
         defaultCanvas.transform.Find("Eclipse Realm UI/Player Stats/Current coins text").GetComponent<Text>().text = n.ToString();
     }
+
+    public void SetEclipseCoinText(string s)
+    {
+        defaultCanvas.transform.Find("Eclipse Realm UI/Player Stats/Current coins text").GetComponent<Text>().text = s;
+    }
+
+    public void HideTotalNumberText()
+    {
+        defaultCanvas.transform.Find("Eclipse Realm UI/Player Stats/Total coins text").gameObject.SetActive(false);
+    }
 }

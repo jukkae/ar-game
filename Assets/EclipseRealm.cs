@@ -18,6 +18,8 @@ public class EclipseRealm : MonoBehaviour {
     int counter = 0; // TODO for dev purposes only, remove
 
     private enum ReachabilityMode {CAST, PATH}
+    public enum GameMode {TIME, SURVIVAL}
+    public GameMode gameMode = GameMode.SURVIVAL;
 
 	void Start () {
 		
@@ -26,26 +28,38 @@ public class EclipseRealm : MonoBehaviour {
 	void Update () {
 		if(initialized)
         {
-            if (counter == 0) // this code is shit
+            if(gameMode == GameMode.TIME)
             {
-                while(true) // TODO timeout at some point
+                if (counter == 0) // this code is shit
                 {
-                    Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
-                    float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
-                    float y = 0.15f;
-                    float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
-                    Vector3 position = new Vector3(x, y, z);
-                    Debug.Log("Trying destination " + position);
-                    if (IsReachable(position))
+                    while (true) // TODO timeout at some point
                     {
-                        enemy.GetComponent<NavMeshAgent>().destination = position;
-                        Debug.Log("New destination: " + position);
-                        break;
+                        Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+                        float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
+                        float y = 0.15f;
+                        float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
+                        Vector3 position = new Vector3(x, y, z);
+                        Debug.Log("Trying destination " + position);
+                        if (IsReachable(position))
+                        {
+                            enemy.GetComponent<NavMeshAgent>().destination = position;
+                            Debug.Log("New destination: " + position);
+                            break;
+                        }
                     }
                 }
+                counter++;
+                if (counter >= 600) counter = 0;
             }
-            counter++;
-            if (counter >= 600) counter = 0;
+
+            if(gameMode == GameMode.SURVIVAL)
+            {
+                counter++;
+                if(counter % (60 * 10) == 0)
+                {
+                    SpawnCoin();
+                }
+            }
         }
 	}
 
@@ -57,11 +71,40 @@ public class EclipseRealm : MonoBehaviour {
         if(meshDebugMaterial != null)
             obstacleMesh.GetComponent<Renderer>().material = meshDebugMaterial;
 
-        PlaceCoins();
-        PlaceEnemy();
+        if(gameMode == GameMode.TIME)
+        {
+            PlaceCoins();
+            PlaceEnemy();
+        }
+        if(gameMode == GameMode.SURVIVAL)
+        {
+            FindObjectOfType<UIController>().HideTotalNumberText();
+        }
+
 
         initialized = true;
         Debug.Log("Eclipse Realm initialized");
+    }
+
+    void SpawnCoin()
+    {
+        Debug.Log("Spawning coin");
+        Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+        while(true)
+        {
+            float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
+            float y = 0.35f;
+            float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
+            Vector3 position = new Vector3(x, y, z);
+            Debug.Log("Trying location " + position);
+            if (IsReachable(position, ReachabilityMode.PATH))
+            {
+                GameObject coin = Instantiate(coinPrefab, position, Quaternion.Euler(0, 0, 90));
+                coin.transform.parent = coinsParent.transform;
+                Debug.Log("OK!");
+                return;
+            }
+        }
     }
 
     void PlaceCoins()
