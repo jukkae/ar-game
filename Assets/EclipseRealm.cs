@@ -59,6 +59,27 @@ public class EclipseRealm : MonoBehaviour {
                 {
                     SpawnCoin();
                 }
+                if(counter % (60 * 15) == 0)
+                {
+                    SkeletonEnemyController skelly = FindObjectOfType<SkeletonEnemyController>(); // TODO multiple skellies
+
+                    while (true) // TODO timeout at some point
+                    {
+                        Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+                        float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
+                        float y = 0.15f;
+                        float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
+                        Vector3 position = new Vector3(x, y, z);
+                        Debug.Log("Trying destination " + position);
+                        if (IsReachable(position))
+                        {
+                            skelly.SetTarget(position);
+                            Debug.Log("New destination: " + position);
+                            break;
+                        }
+                    }
+
+                }
             }
         }
 	}
