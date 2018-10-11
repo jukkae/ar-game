@@ -17,6 +17,8 @@ public class EclipseRealm : MonoBehaviour {
     private GameObject enemy;
     int counter = 0; // TODO for dev purposes only, remove
 
+    private enum ReachabilityMode {CAST, PATH}
+
 	void Start () {
 		
 	}
@@ -85,14 +87,21 @@ public class EclipseRealm : MonoBehaviour {
     void PlaceEnemy()
     {
         Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+
+
+
+        int timeout = 100;
         while(true) // TODO timeout at some point
         {
+            timeout--;
+            if (timeout <= 0) break; // TODO
+
             float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
             float y = 0.15f;
             float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
             Vector3 position = new Vector3(x, y, z);
             Debug.Log("Trying location " + position);
-            if(IsReachable(position)) // TODO this needs a better chceck because of colliders etc
+            if(IsReachable(position, ReachabilityMode.PATH)) // TODO this needs a better chceck because of colliders etc
             {
                 enemy = Instantiate(enemyPrefab, position, Quaternion.Euler(0, 0, 0));
                 enemy.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
@@ -115,16 +124,38 @@ public class EclipseRealm : MonoBehaviour {
         }
     }
 
-    bool IsReachable(Vector3 position) // TODO quick-and-dirty heuristic, doesn't yet actually check if reachable, only if on open floor
+    bool IsReachable(Vector3 position, ReachabilityMode mode = ReachabilityMode.PATH) // TODO quick-and-dirty heuristic, doesn't yet actually check if reachable, only if on open floor
     {
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(position, out hit, 1.0f, NavMesh.AllAreas))
+        switch (mode)
         {
-            //Debug.Log("Position valid, hit mask: " + hit.mask + ", position of hit: " + hit.position + ", normal at hit: " + hit.normal);
-            if(hit.position.y < 0.5) // Empirical constant: If higher, then hit on ceiling
-            {
-                return true;
-            }
+            case ReachabilityMode.CAST:
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(position, out hit, 1.0f, NavMesh.AllAreas))
+                {
+                    //Debug.Log("Position valid, hit mask: " + hit.mask + ", position of hit: " + hit.position + ", normal at hit: " + hit.normal);
+                    if (hit.position.y < 0.5) // Empirical constant: If higher, then hit on ceiling
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            case ReachabilityMode.PATH:
+                NavMeshPath path = new NavMeshPath();
+                NavMesh.CalculatePath(position, new Vector3(0, 0, 0), 1, path);
+
+                bool debug = false;
+                if(debug) {
+                    string p = "PATH: ";
+                    p += path.status;
+                    p += ", CORNERS: ";
+                    for (int i = 0; i < path.corners.Length; i++)
+                    {
+                        p += path.corners[i];
+                        p += ", ";
+                    }
+                    Debug.Log(p);
+                }
+                return path.status == NavMeshPathStatus.PathComplete;
         }
         return false;
     }
