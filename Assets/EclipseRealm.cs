@@ -86,6 +86,11 @@ public class EclipseRealm : MonoBehaviour {
         Debug.Log("Eclipse Realm initialized");
     }
 
+    void SpawnEnemy()
+    {
+        Debug.Log("Spawning enemy");
+    }
+
     void SpawnCoin()
     {
         Debug.Log("Spawning coin");
@@ -130,8 +135,6 @@ public class EclipseRealm : MonoBehaviour {
     void PlaceEnemy()
     {
         Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
-
-
 
         int timeout = 100;
         while(true) // TODO timeout at some point
