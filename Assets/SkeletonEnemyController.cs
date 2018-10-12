@@ -14,7 +14,7 @@ public class SkeletonEnemyController : MonoBehaviour {
 
     private EclipsePlayer player;
 
-    public enum EnemyAiState { WANDER, SEEK_PLAYER }
+    public enum EnemyAiState { WANDER, SEEK_PLAYER, ATTACK }
     public EnemyAiState aiState;
 
     void Start () {
@@ -30,7 +30,13 @@ public class SkeletonEnemyController : MonoBehaviour {
     }
 	
 	void Update () {
-        if((player.transform.position - this.transform.position).magnitude < 10.0f)
+        if ((player.transform.position - this.transform.position).magnitude < 1.5f)
+        {
+            aiState = EnemyAiState.ATTACK;
+            SetTarget(this.transform.position);
+            animator.SetTrigger("Attack");
+        }
+        else if((player.transform.position - this.transform.position).magnitude < 10.0f)
         {
             aiState = EnemyAiState.SEEK_PLAYER;
             SetTarget(player.transform.position);
