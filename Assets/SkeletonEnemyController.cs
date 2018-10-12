@@ -17,6 +17,9 @@ public class SkeletonEnemyController : MonoBehaviour {
     public enum EnemyAiState { WANDER, SEEK_PLAYER, ATTACK }
     public EnemyAiState aiState;
 
+    public int health = 5;
+    public const int maxHealth = 5;
+
     void Start () {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
@@ -71,6 +74,20 @@ public class SkeletonEnemyController : MonoBehaviour {
         animator.SetFloat("Velocity", velocity.magnitude * (4.0f / 3.0f), dampTime, Time.deltaTime);
 
         //GetComponent<LookAt>().lookAtTargetPosition = agent.steeringTarget + transform.forward;
+
+        if (Input.GetKeyDown(KeyCode.Q)) TakeDamage(1); // TODO for debugging, remove
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0) Die();
+        else animator.SetTrigger("TakeDamage");
+    }
+
+    public void Die()
+    {
+        animator.SetTrigger("Die");
     }
 
     public void SetTarget(Vector3 target)
