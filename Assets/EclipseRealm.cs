@@ -59,7 +59,7 @@ public class EclipseRealm : MonoBehaviour {
                 {
                     SpawnCoin();
                 }
-                if(counter % (60 * 15) == 0)
+                if(counter % (60 * 10) == 0)
                 {
                     SkeletonEnemyController skelly = FindObjectOfType<SkeletonEnemyController>(); // TODO multiple skellies
 
