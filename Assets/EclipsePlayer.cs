@@ -54,39 +54,29 @@ public class EclipsePlayer : MonoBehaviour {
         if (EventSystem.current && (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0)) || StateManager.sceneState == SceneState.Minigame)
             return;
 
-#if UNITY_EDITOR
-        if (Input.GetMouseButtonDown(0))
-        {
-            if(Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit, interactRange, layerMask))
-            {
-                GameObject go = hit.collider.gameObject;
-                if(go.GetComponent<SkeletonEnemyController>() != null)
-                {
-                    SkeletonEnemyController skelly = go.GetComponent<SkeletonEnemyController>();
-                    skelly.TakeDamage(1);
-                }
-            }
-            else { }
-        }
+        Vector2 position;
 
+#if UNITY_EDITOR
+        if (!Input.GetMouseButtonDown(0))
+            return;
+        position = Input.mousePosition;
 #else
-#endif
         Touch touch;
         if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
             return;
+        position = touch.position;
+#endif
 
-        if (Physics.Raycast(cam.ScreenPointToRay(touch.position), out hit, interactRange, eclipseLayers))
+        if (Physics.Raycast(cam.ScreenPointToRay(position), out hit, interactRange, layerMask))
         {
-            Interact(hit.collider, hit.point, false);
+            GameObject go = hit.collider.gameObject;
+            if (go.GetComponent<SkeletonEnemyController>() != null)
+            {
+                SkeletonEnemyController skelly = go.GetComponent<SkeletonEnemyController>();
+                skelly.TakeDamage(1);
+            }
         }
-        //else if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out arcHit))
-        //{
-        //    Interact(null, arcHit.Pose.position, true);
-        //}
-        else
-        {
-            Interact(null, Vector3.zero, false);
-        }
+        else { }
     }
 
     /**<summary> Interaction on point hit by ray </summary>*/
