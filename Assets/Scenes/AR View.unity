@@ -4430,6 +4430,24 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1067660538}
   m_CullTransparentMesh: 0
+--- !u!1 &1124454075 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1688078650759922, guid: 18686906e33b07f449e8ddef51a8aeff,
+    type: 2}
+  m_PrefabInternal: {fileID: 182973306}
+--- !u!136 &1124454080
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1124454075}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.2
+  m_Height: 0.75
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.12, z: 0}
 --- !u!1 &1157400310
 GameObject:
   m_ObjectHideFlags: 0
