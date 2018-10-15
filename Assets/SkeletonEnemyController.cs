@@ -95,6 +95,15 @@ public class SkeletonEnemyController : MonoBehaviour {
         agent.destination = target;
     }
 
+    public void AttackPlayer()
+    {
+        Debug.Log("Attacking player!");
+        if ((player.transform.position - this.transform.position).magnitude < 1.5f)
+        {
+            player.TakeDamage(5);
+        }
+    }
+
     void OnAnimatorMove()
     {
         // Update position to agent position

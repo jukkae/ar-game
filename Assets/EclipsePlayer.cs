@@ -24,7 +24,11 @@ public class EclipsePlayer : MonoBehaviour {
 
     public void TakeDamage(float damage) {
         health -= damage;
-        if (health <= 0) Die();
+        if (health <= 0)
+        {
+            health = 0;
+            Die();
+        }
     }
 	
 	void Update () {
@@ -35,11 +39,15 @@ public class EclipsePlayer : MonoBehaviour {
     void OnGUI()
     {
         GUI.Box(new Rect(10, Screen.height - 30, healthBarLength, 20), health + "/" + maxHealth);
+        if(health == 0)
+        {
+            GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "You're dead!");
+        }
     }
 
     public void Die()
     {
-        GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "You're dead");
+        Time.timeScale = 0f;
         // TODO
     }
 
