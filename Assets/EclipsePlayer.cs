@@ -59,29 +59,17 @@ public class EclipsePlayer : MonoBehaviour {
         {
             if(Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit, interactRange, layerMask))
             {
-                Debug.Log("HIT: " + hit.point);
-                Debug.Log(hit.collider.gameObject);
+                GameObject go = hit.collider.gameObject;
+                if(go.GetComponent<SkeletonEnemyController>() != null)
+                {
+                    SkeletonEnemyController skelly = go.GetComponent<SkeletonEnemyController>();
+                    skelly.TakeDamage(1);
+                }
             }
-            else
-            {
-                Debug.Log("NO HIT");
-            }
+            else { }
         }
-        
-        //{
-        //    if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit, interactRange, eclipseLayers))
-        //    {
-        //        Interact(hit.collider, hit.point, false);
-        //    }
-        //    //else if (Frame.Raycast(Input.mousePosition.x, Input.mousePosition.y, raycastFilter, out arcHit))
-        //    //{
-        //    //    Interact(null, arcHit.Pose.position, true);
-        //    //}
-        //    else
-        //    {
-        //        Interact(null, Vector3.zero, false);
-        //    }
-        //}
+
+#else
 #endif
         Touch touch;
         if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
