@@ -79,28 +79,4 @@ public class EclipsePlayer : MonoBehaviour {
         else { }
     }
 
-    /**<summary> Interaction on point hit by ray </summary>*/
-    private void Interact(Collider col, Vector3 position, bool ar)
-    {
-        if (col != null) Debug.Log("interact");
-        else Debug.Log("null");
-        //Item item = null;
-        //if (col) item = col.GetComponentInParent<Item>();
-
-        //if (item && !(item is Capturable))
-        //{
-        //    item.Interact(gameObject);
-        //}
-        //else if (ObjectEditMode)
-        //    InstantiateObject(position, ar);
-        //else if (equippedItems.Count > 0 && data.activeItemIndex >= 0)
-        //{
-        //    if (energy > 0)
-        //        energy -= equippedItems[data.activeItemIndex].Use();
-        //    else
-        //        Debug.Log("Out of energy");
-        //}
-    }
-
-
 }

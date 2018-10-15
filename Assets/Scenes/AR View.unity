@@ -749,10 +749,9 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 195138571756686636, guid: 18686906e33b07f449e8ddef51a8aeff,
-        type: 2}
-      propertyPath: m_AngularSpeed
-      value: 360
+    - target: {fileID: 1688078650759922, guid: 18686906e33b07f449e8ddef51a8aeff, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18686906e33b07f449e8ddef51a8aeff, type: 2}
@@ -1252,7 +1251,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 7.999996, y: 0}
+  m_AnchoredPosition: {x: 8.000011, y: 0.000030517578}
   m_SizeDelta: {x: 190, y: 190}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &368881917
@@ -4430,24 +4429,6 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1067660538}
   m_CullTransparentMesh: 0
---- !u!1 &1124454075 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1688078650759922, guid: 18686906e33b07f449e8ddef51a8aeff,
-    type: 2}
-  m_PrefabInternal: {fileID: 182973306}
---- !u!136 &1124454080
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1124454075}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.2
-  m_Height: 0.75
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.12, z: 0}
 --- !u!1 &1157400310
 GameObject:
   m_ObjectHideFlags: 0
@@ -5636,7 +5617,7 @@ MonoBehaviour:
   meshDebugMaterial: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   coinPrefab: {fileID: 1203825086308630, guid: 157ba0b1f0f52e147aa83c63c974301c, type: 2}
   coinsParent: {fileID: 1026476359}
-  enemyPrefab: {fileID: 1517330249523152, guid: f0612f9ade4945544b78e7b155ade161,
+  enemyPrefab: {fileID: 1688078650759922, guid: 18686906e33b07f449e8ddef51a8aeff,
     type: 2}
   gameMode: 1
 --- !u!1 &1449211256
