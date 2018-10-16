@@ -719,15 +719,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4794747859748202, guid: 18686906e33b07f449e8ddef51a8aeff, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -0.206
+      value: -0.37
       objectReference: {fileID: 0}
     - target: {fileID: 4794747859748202, guid: 18686906e33b07f449e8ddef51a8aeff, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.246
+      value: 0.711
       objectReference: {fileID: 0}
     - target: {fileID: 4794747859748202, guid: 18686906e33b07f449e8ddef51a8aeff, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.714
+      value: 5.68
       objectReference: {fileID: 0}
     - target: {fileID: 4794747859748202, guid: 18686906e33b07f449e8ddef51a8aeff, type: 2}
       propertyPath: m_LocalRotation.x
@@ -4322,6 +4322,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   health: 100
+  maxEnergy: 100
+  energy: 100
 --- !u!1 &1026476359
 GameObject:
   m_ObjectHideFlags: 0

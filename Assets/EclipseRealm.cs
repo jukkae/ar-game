@@ -118,7 +118,7 @@ public class EclipseRealm : MonoBehaviour {
         while(true)
         {
             float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
-            float y = 0.35f;
+            float y = 1.0f;
             float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
             Vector3 position = new Vector3(x, y, z);
             Debug.Log("Trying location " + position);
