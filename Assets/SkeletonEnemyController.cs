@@ -80,6 +80,7 @@ public class SkeletonEnemyController : MonoBehaviour {
 
     public void TakeDamage(int damage)
     {
+        GetComponentInChildren<ParticleSystem>().Emit(500);
         health -= damage;
         if (health <= 0) Die();
         else animator.SetTrigger("TakeDamage");

@@ -8,6 +8,7 @@ using UnityEngine.AI;
 public class EclipseRealm : MonoBehaviour {
     WorldController worldController;
     bool initialized = false;
+    public bool changeMaterialToDebug;
     public Material meshDebugMaterial;
     GameObject obstacleMesh;
     public GameObject coinPrefab;
@@ -35,7 +36,7 @@ public class EclipseRealm : MonoBehaviour {
             if(gameMode == GameMode.SURVIVAL)
             {
                 counter++;
-                if(counter % (60 * 5) == 0)
+                if(counter % (60 * 2) == 0)
                 {
                     SpawnCoin();
                 }
@@ -70,8 +71,11 @@ public class EclipseRealm : MonoBehaviour {
         this.worldController = worldController;
 
         obstacleMesh = worldController.transform.Find("ObstacleMesh").gameObject;
-        if(meshDebugMaterial != null)
-            obstacleMesh.GetComponent<Renderer>().material = meshDebugMaterial;
+        if (changeMaterialToDebug)
+        {
+            if (meshDebugMaterial != null)
+                obstacleMesh.GetComponent<Renderer>().material = meshDebugMaterial;
+        }
 
         if(gameMode == GameMode.TIME)
         {
