@@ -14,8 +14,9 @@ public class SkeletonEnemyController : MonoBehaviour {
 
     private EclipsePlayer player;
 
-    public enum EnemyAiState { WANDER, SEEK_PLAYER, ATTACK }
+    public enum EnemyAiState { WANDER, SEEK_PLAYER, ATTACK, TAKE_HIT, DEAD }
     public EnemyAiState aiState;
+    private bool stopped = false;
 
     public int health = 5;
     public const int maxHealth = 5;
@@ -33,6 +34,17 @@ public class SkeletonEnemyController : MonoBehaviour {
     }
 	
 	void Update () {
+        if( aiState == EnemyAiState.DEAD)
+        {
+            agent.velocity = Vector3.zero;
+            agent.isStopped = true;
+            return;
+        }
+        if(!(animator.GetCurrentAnimatorStateInfo(0).IsName("Hit") ||
+             animator.GetCurrentAnimatorStateInfo(0).IsName("Death")))
+        {
+            //agent.isStopped = false;
+        }
         if ((player.transform.position - this.transform.position).magnitude < 1.5f)
         {
             aiState = EnemyAiState.ATTACK;
@@ -80,6 +92,8 @@ public class SkeletonEnemyController : MonoBehaviour {
 
     public void TakeDamage(int damage)
     {
+        aiState = EnemyAiState.TAKE_HIT;
+        DisableMovement();
         GetComponentInChildren<ParticleSystem>().Emit(500);
         health -= damage;
         if (health <= 0) Die();
@@ -89,6 +103,8 @@ public class SkeletonEnemyController : MonoBehaviour {
     public void Die()
     {
         animator.SetTrigger("Die");
+        aiState = EnemyAiState.DEAD;
+        DisableMovement();
     }
 
     public void SetTarget(Vector3 target)
@@ -98,16 +114,28 @@ public class SkeletonEnemyController : MonoBehaviour {
 
     public void AttackPlayer()
     {
-        Debug.Log("Attacking player!");
+        aiState = EnemyAiState.ATTACK;
         if ((player.transform.position - this.transform.position).magnitude < 1.5f)
         {
             player.TakeDamage(5);
         }
     }
 
+    public void EnableMovement()
+    {
+        agent.isStopped = false;
+    }
+
+    public void DisableMovement()
+    {
+        agent.velocity = Vector3.zero;
+        agent.isStopped = true;
+    }
+
     void OnAnimatorMove()
     {
-        // Update position to agent position
-        transform.position = agent.nextPosition;
+        if(aiState != EnemyAiState.DEAD && aiState != EnemyAiState.TAKE_HIT)
+            transform.position = agent.nextPosition;
     }
+
 }
