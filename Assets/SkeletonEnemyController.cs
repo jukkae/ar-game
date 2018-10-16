@@ -92,12 +92,15 @@ public class SkeletonEnemyController : MonoBehaviour {
 
     public void TakeDamage(int damage)
     {
-        aiState = EnemyAiState.TAKE_HIT;
-        DisableMovement();
-        GetComponentInChildren<ParticleSystem>().Emit(500);
-        health -= damage;
-        if (health <= 0) Die();
-        else animator.SetTrigger("TakeDamage");
+        if(aiState != EnemyAiState.DEAD)
+        {
+            aiState = EnemyAiState.TAKE_HIT;
+            DisableMovement();
+            GetComponentInChildren<ParticleSystem>().Emit(500);
+            health -= damage;
+            if (health <= 0) Die();
+            else animator.SetTrigger("TakeDamage");
+        }
     }
 
     public void Die()

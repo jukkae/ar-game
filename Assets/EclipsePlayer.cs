@@ -10,6 +10,10 @@ public class EclipsePlayer : MonoBehaviour {
     public float health = 100;
     private float healthBarLength = Screen.width / 2;
 
+    public float maxEnergy = 100;
+    public float energy = 100;
+    private float energyBarLength = Screen.width / 2;
+
     private Camera cam;
 
     float interactRange = 10; // meters
@@ -33,13 +37,20 @@ public class EclipsePlayer : MonoBehaviour {
 	
 	void Update () {
         healthBarLength = (Screen.width / 2) * (health / (float)maxHealth);
+        energyBarLength = (Screen.width / 2) * (energy / (float)maxEnergy);
+        if(energy < maxEnergy)
+        {
+            energy += 0.75f;
+            if (energy > maxEnergy) energy = maxEnergy;
+        }
         Controls();
     }
     
     void OnGUI()
     {
         GUI.Box(new Rect(10, Screen.height - 30, healthBarLength, 20), health + "/" + maxHealth);
-        if(health == 0)
+        GUI.Box(new Rect(10, Screen.height - 70, energyBarLength, 20), energy + "/" + maxEnergy);
+        if (health == 0)
         {
             GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "You're dead!");
         }
@@ -80,8 +91,12 @@ public class EclipsePlayer : MonoBehaviour {
             GameObject go = hit.collider.gameObject;
             if (go.GetComponent<SkeletonEnemyController>() != null)
             {
-                SkeletonEnemyController skelly = go.GetComponent<SkeletonEnemyController>();
-                skelly.TakeDamage(1);
+                if(energy > 30.0f)
+                {
+                    SkeletonEnemyController skelly = go.GetComponent<SkeletonEnemyController>();
+                    skelly.TakeDamage(1);
+                    energy -= 30.0f;
+                }
             }
         }
         else { }
