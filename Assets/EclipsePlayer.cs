@@ -97,17 +97,18 @@ public class EclipsePlayer : MonoBehaviour {
     /**<summary> Input and control management </summary>*/
     private void Controls()
     {
-        TrackableHit arcHit;
         RaycastHit hit;
         int layerMask = 1 << 10;
         layerMask = ~layerMask;
 
-        if (EventSystem.current && (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0)) || StateManager.sceneState == SceneState.Minigame)
-            return;
+        //TODO THIS IS PROBLEMATIC, AS THERE'S THE INVISIBLE DAMAGE INDICATOR!
+        //if (EventSystem.current && (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0)) || StateManager.sceneState == SceneState.Minigame)
+            //return;
 
         Vector2 position;
 
 #if UNITY_EDITOR
+
         if (!Input.GetMouseButtonDown(0))
             return;
         position = Input.mousePosition;
@@ -117,7 +118,6 @@ public class EclipsePlayer : MonoBehaviour {
             return;
         position = touch.position;
 #endif
-
         if (Physics.Raycast(cam.ScreenPointToRay(position), out hit, interactRange, layerMask))
         {
             GameObject go = hit.collider.gameObject;
