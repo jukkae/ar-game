@@ -120,7 +120,7 @@ public class SkeletonEnemyController : MonoBehaviour {
         aiState = EnemyAiState.ATTACK;
         if ((player.transform.position - this.transform.position).magnitude < 1.5f)
         {
-            player.TakeDamage(5);
+            player.TakeDamage(5, this.gameObject);
         }
     }
 

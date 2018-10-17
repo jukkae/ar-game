@@ -29,8 +29,20 @@ public class EclipsePlayer : MonoBehaviour {
         eclipseLayers = 1 << enemyLayer;
 	}
 
-    public void TakeDamage(float damage) {
-        FlashDamage();
+    public void TakeDamage(float damage, GameObject attacker) {
+        Vector3 viewportCoords = cam.WorldToViewportPoint(attacker.transform.position);
+        if (viewportCoords.x >= 0 && viewportCoords.x <= 1 && viewportCoords.y >= 0 && viewportCoords.y <= 1 && viewportCoords.z > 0)
+        //if(attacker.GetComponentInChildren<Renderer>().isVisible)
+        {
+            FlashDamage();
+        }
+        else
+        {
+            Vector3 targetDir = attacker.transform.position - this.transform.position;
+            if (Vector3.Dot(transform.right, targetDir) > 0) FlashDamageRight();
+            else FlashDamageLeft();
+        }
+
         health -= damage;
         if (health <= 0)
         {
@@ -43,8 +55,19 @@ public class EclipsePlayer : MonoBehaviour {
     {
         damageIndicator.GetComponent<ChangeOpacity>().FlashDamage();
     }
-	
-	void Update () {
+
+    public void FlashDamageLeft()
+    {
+        damageIndicator.GetComponent<ChangeOpacity>().FlashDamageLeft();
+    }
+
+    public void FlashDamageRight()
+    {
+        damageIndicator.GetComponent<ChangeOpacity>().FlashDamageRight();
+    }
+
+
+    void Update () {
         healthBarLength = (Screen.width / 2) * (health / (float)maxHealth);
         energyBarLength = (Screen.width / 2) * (energy / (float)maxEnergy);
         if(energy < maxEnergy)
