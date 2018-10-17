@@ -832,9 +832,10 @@ GameObject:
   - component: {fileID: 193633334}
   - component: {fileID: 193633333}
   - component: {fileID: 193633332}
-  m_Layer: 5
+  - component: {fileID: 193633336}
+  m_Layer: 18
   m_Name: Damage Indicator
-  m_TagString: Untagged
+  m_TagString: VFX
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -904,6 +905,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &193633336
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 193633331}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &215930679
 GameObject:
   m_ObjectHideFlags: 0
@@ -6370,9 +6382,10 @@ GameObject:
   - component: {fileID: 1562656919}
   - component: {fileID: 1562656921}
   - component: {fileID: 1562656920}
-  m_Layer: 5
+  - component: {fileID: 1562656922}
+  m_Layer: 18
   m_Name: Arrow Left
-  m_TagString: Untagged
+  m_TagString: VFX
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6429,6 +6442,17 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1562656918}
   m_CullTransparentMesh: 0
+--- !u!225 &1562656922
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1562656918}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1568751705
 GameObject:
   m_ObjectHideFlags: 0
@@ -8184,9 +8208,10 @@ GameObject:
   - component: {fileID: 1956075091}
   - component: {fileID: 1956075093}
   - component: {fileID: 1956075092}
-  m_Layer: 5
+  - component: {fileID: 1956075094}
+  m_Layer: 18
   m_Name: Arrow Right
-  m_TagString: Untagged
+  m_TagString: VFX
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8243,6 +8268,17 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1956075090}
   m_CullTransparentMesh: 0
+--- !u!225 &1956075094
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1956075090}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1956785417
 GameObject:
   m_ObjectHideFlags: 0

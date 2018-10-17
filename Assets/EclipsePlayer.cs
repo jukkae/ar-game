@@ -101,9 +101,8 @@ public class EclipsePlayer : MonoBehaviour {
         int layerMask = 1 << 10;
         layerMask = ~layerMask;
 
-        //TODO THIS IS PROBLEMATIC, AS THERE'S THE INVISIBLE DAMAGE INDICATOR!
-        //if (EventSystem.current && (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0)) || StateManager.sceneState == SceneState.Minigame)
-            //return;
+        if (EventSystem.current &&  (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0)) || StateManager.sceneState == SceneState.Minigame)
+            return;
 
         Vector2 position;
 

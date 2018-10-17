@@ -8,6 +8,7 @@ TagManager:
   - MaterialButtonLayer
   - Eclipse Item
   - AR obstacle
+  - VFX
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - MinigameItem
   - MinigameTarget
   - EclipseEnemy
-  - 
+  - VFX
   - 
   - 
   - 
