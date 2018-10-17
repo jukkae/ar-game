@@ -20,6 +20,9 @@ public class EclipsePlayer : MonoBehaviour {
     int enemyLayer = 17;
     LayerMask eclipseLayers;
 
+    public GameObject damageIndicator;
+    public enum FadeDirection { IN, OUT };
+
     void Start () {
         cam = GetComponent<Camera>();
         if (cam == null) Debug.Log("Camera not found!");
@@ -27,12 +30,18 @@ public class EclipsePlayer : MonoBehaviour {
 	}
 
     public void TakeDamage(float damage) {
+        FlashDamage();
         health -= damage;
         if (health <= 0)
         {
             health = 0;
             Die();
         }
+    }
+
+    public void FlashDamage()
+    {
+        damageIndicator.GetComponent<ChangeOpacity>().FlashDamage();
     }
 	
 	void Update () {
