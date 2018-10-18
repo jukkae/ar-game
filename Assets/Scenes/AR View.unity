@@ -5715,6 +5715,8 @@ MonoBehaviour:
   enemyPrefab: {fileID: 1688078650759922, guid: 18686906e33b07f449e8ddef51a8aeff,
     type: 2}
   gameMode: 1
+  timeBetweenEnemySpawns: 100
+  timeBetweenCoinSpawns: 2
 --- !u!1 &1449211256
 GameObject:
   m_ObjectHideFlags: 0

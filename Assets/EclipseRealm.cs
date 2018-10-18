@@ -21,6 +21,9 @@ public class EclipseRealm : MonoBehaviour {
     public enum GameMode {TIME, SURVIVAL}
     public GameMode gameMode = GameMode.SURVIVAL;
 
+    public int timeBetweenEnemySpawns;
+    public int timeBetweenCoinSpawns;
+
 	void Start () {
 		
 	}
@@ -36,11 +39,11 @@ public class EclipseRealm : MonoBehaviour {
             if(gameMode == GameMode.SURVIVAL)
             {
                 counter++;
-                if(counter % (60 * 2) == 0)
+                if(counter % (60 * timeBetweenCoinSpawns) == 0)
                 {
                     SpawnCoin();
                 }
-                if(counter % (60 * 10) == 0)
+                if(counter % (60 * timeBetweenEnemySpawns) == 0)
                 {
                     SpawnEnemy();
                     //SkeletonEnemyController skelly = FindObjectOfType<SkeletonEnemyController>(); // TODO multiple skellies

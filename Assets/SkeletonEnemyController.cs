@@ -21,6 +21,10 @@ public class SkeletonEnemyController : MonoBehaviour {
     public int health = 5;
     public const int maxHealth = 5;
 
+    private bool deathAnimation = false; // This is a shit way of fixing shit animation
+    private Vector3 positionAtTimeOfDeath;
+    private int deathAnimationCountdown = 42; // Like, real shit. BTW, this is yet another empirical constant, not just any ordinary magic number.
+
     void Start () {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
@@ -34,7 +38,26 @@ public class SkeletonEnemyController : MonoBehaviour {
     }
 	
 	void Update () {
-        if( aiState == EnemyAiState.DEAD)
+        if (deathAnimation)
+        {
+            if(deathAnimationCountdown > 0)
+            {
+                deathAnimationCountdown--;
+            }
+            else
+            {
+                if ((positionAtTimeOfDeath.y - transform.position.y) < 0.614) // empirical constant
+                {
+                    transform.position = new Vector3(transform.position.x, transform.position.y - 0.025f, transform.position.z);
+                }
+                else
+                {
+                    transform.position = new Vector3(transform.position.x, positionAtTimeOfDeath.y - 0.614f, transform.position.z);
+                    deathAnimation = false; // jesus christ i'm sorry
+                }
+            }
+        }
+        if ( aiState == EnemyAiState.DEAD)
         {
             agent.velocity = Vector3.zero;
             agent.isStopped = true;
@@ -88,6 +111,7 @@ public class SkeletonEnemyController : MonoBehaviour {
         //GetComponent<LookAt>().lookAtTargetPosition = agent.steeringTarget + transform.forward;
 
         if (Input.GetKeyDown(KeyCode.Q)) TakeDamage(1); // TODO for debugging, remove
+        
     }
 
     public void TakeDamage(int damage)
@@ -107,6 +131,12 @@ public class SkeletonEnemyController : MonoBehaviour {
     {
         animator.SetTrigger("Die");
         aiState = EnemyAiState.DEAD;
+        deathAnimation = true; // yeh i know i probably don't need both of these
+        positionAtTimeOfDeath = transform.position;
+        //CapsuleCollider c = this.GetComponent<CapsuleCollider>();
+        //Vector3 center = c.center;
+        //Vector3 newCenter = new Vector3(center.x, center.y + 0.18f, center.z);
+        //c.center = newCenter;
         DisableMovement();
     }
 
