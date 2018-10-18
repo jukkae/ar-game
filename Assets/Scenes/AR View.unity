@@ -749,6 +749,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1688078650759922, guid: 18686906e33b07f449e8ddef51a8aeff, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18686906e33b07f449e8ddef51a8aeff, type: 2}
   m_IsPrefabAsset: 0
@@ -5715,7 +5719,6 @@ MonoBehaviour:
   enemyPrefab: {fileID: 1688078650759922, guid: 18686906e33b07f449e8ddef51a8aeff,
     type: 2}
   gameMode: 1
-  timeBetweenEnemySpawns: 100
   timeBetweenCoinSpawns: 2
 --- !u!1 &1449211256
 GameObject:
@@ -8518,7 +8521,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: -0.000061035156}
+  m_AnchoredPosition: {x: -0.000061035156, y: -0.000061035156}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1001 &2012488968
