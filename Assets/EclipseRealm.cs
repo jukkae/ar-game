@@ -95,7 +95,6 @@ public class EclipseRealm : MonoBehaviour {
 
     void SpawnEnemy()
     {
-        Debug.Log("Spawning enemy");
         Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
         while (true)
         {
@@ -103,12 +102,10 @@ public class EclipseRealm : MonoBehaviour {
             float y = 0.35f;
             float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
             Vector3 position = new Vector3(x, y, z);
-            Debug.Log("Trying location " + position);
             if (IsReachable(position, ReachabilityMode.PATH))
             {
                 GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.Euler(0, 0, 90));
                 enemy.transform.parent = coinsParent.transform;
-                Debug.Log("OK!");
                 return;
             }
         }
@@ -116,7 +113,6 @@ public class EclipseRealm : MonoBehaviour {
 
     void SpawnCoin()
     {
-        Debug.Log("Spawning coin");
         Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
         while(true)
         {
@@ -124,12 +120,10 @@ public class EclipseRealm : MonoBehaviour {
             float y = 1.0f;
             float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
             Vector3 position = new Vector3(x, y, z);
-            Debug.Log("Trying location " + position);
             if (IsReachable(position, ReachabilityMode.PATH))
             {
                 GameObject coin = Instantiate(coinPrefab, position, Quaternion.Euler(0, 0, 90));
                 coin.transform.parent = coinsParent.transform;
-                Debug.Log("OK!");
                 return;
             }
         }
