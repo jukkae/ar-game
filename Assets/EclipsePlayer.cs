@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class EclipsePlayer : MonoBehaviour {
+    private int score = 0;
 
     public float maxHealth = 100;
     public float health = 100;
@@ -22,7 +23,7 @@ public class EclipsePlayer : MonoBehaviour {
 
     public GameObject damageIndicator;
     public enum FadeDirection { IN, OUT };
-
+    
     void Start () {
         cam = GetComponent<Camera>();
         if (cam == null) Debug.Log("Camera not found!");
@@ -128,6 +129,13 @@ public class EclipsePlayer : MonoBehaviour {
                     skelly.TakeDamage(1);
                     energy -= 30.0f;
                 }
+            }
+            if (go.GetComponent<PlaySoundOnPickup>() != null) // TODO yeah this name is starting to become extremely bad
+            {
+                PlaySoundOnPickup coin = go.GetComponent<PlaySoundOnPickup>();
+                coin.Pickup();
+                score++;
+                FindObjectOfType<UIController>().SetCurrentNumberOfEclipseCoins(score);
             }
         }
         else { }
