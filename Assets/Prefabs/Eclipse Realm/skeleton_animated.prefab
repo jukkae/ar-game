@@ -2079,6 +2079,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aiState: 0
   health: 5
+  damageSound: {fileID: 8300000, guid: 64c93d597e246ed45b9a27cbdd092dfe, type: 3}
+  deathSound: {fileID: 8300000, guid: a22b8c429f521429084d616c68dda19a, type: 3}
+  attackSound: {fileID: 8300000, guid: e5883d98a9730bc49bd2c525fb2ad766, type: 3}
 --- !u!136 &136144699696426012
 CapsuleCollider:
   m_ObjectHideFlags: 1

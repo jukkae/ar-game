@@ -25,6 +25,10 @@ public class SkeletonEnemyController : MonoBehaviour {
     private Vector3 positionAtTimeOfDeath;
     private int deathAnimationCountdown = 42; // Like, real shit. BTW, this is yet another empirical constant, not just any ordinary magic number.
 
+    public AudioClip damageSound;
+    public AudioClip deathSound;
+    public AudioClip attackSound;
+
     void Start () {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
@@ -118,6 +122,7 @@ public class SkeletonEnemyController : MonoBehaviour {
     {
         if(aiState != EnemyAiState.DEAD)
         {
+            AudioSource.PlayClipAtPoint(damageSound, transform.position);
             aiState = EnemyAiState.TAKE_HIT;
             DisableMovement();
             GetComponentInChildren<ParticleSystem>().Emit(500);
@@ -129,6 +134,7 @@ public class SkeletonEnemyController : MonoBehaviour {
 
     public void Die()
     {
+        AudioSource.PlayClipAtPoint(deathSound, transform.position);
         animator.SetTrigger("Die");
         aiState = EnemyAiState.DEAD;
         deathAnimation = true; // yeh i know i probably don't need both of these
@@ -148,6 +154,7 @@ public class SkeletonEnemyController : MonoBehaviour {
 
     public void AttackPlayer()
     {
+        AudioSource.PlayClipAtPoint(attackSound, transform.position);
         aiState = EnemyAiState.ATTACK;
         if ((player.transform.position - this.transform.position).magnitude < 1.5f)
         {

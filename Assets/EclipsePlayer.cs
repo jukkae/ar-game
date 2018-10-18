@@ -23,6 +23,8 @@ public class EclipsePlayer : MonoBehaviour {
 
     public GameObject damageIndicator;
     public enum FadeDirection { IN, OUT };
+
+    public AudioClip damageSound;
     
     void Start () {
         cam = GetComponent<Camera>();
@@ -31,6 +33,8 @@ public class EclipsePlayer : MonoBehaviour {
 	}
 
     public void TakeDamage(float damage, GameObject attacker) {
+        AudioSource.PlayClipAtPoint(damageSound, transform.position);
+
         Vector3 viewportCoords = cam.WorldToViewportPoint(attacker.transform.position);
         if (viewportCoords.x >= 0 && viewportCoords.x <= 1 && viewportCoords.y >= 0 && viewportCoords.y <= 1 && viewportCoords.z > 0)
         //if(attacker.GetComponentInChildren<Renderer>().isVisible)
