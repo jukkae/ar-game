@@ -137,6 +137,7 @@ public class SkeletonEnemyController : MonoBehaviour {
         //Vector3 center = c.center;
         //Vector3 newCenter = new Vector3(center.x, center.y + 0.18f, center.z);
         //c.center = newCenter;
+        GetComponent<Collider>().enabled = false;
         DisableMovement();
     }
 
