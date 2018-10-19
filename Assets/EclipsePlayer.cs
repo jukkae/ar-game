@@ -17,7 +17,7 @@ public class EclipsePlayer : MonoBehaviour {
 
     private Camera cam;
 
-    float interactRange = 10; // meters
+    float interactRange = 3.0f; // meters
     int enemyLayer = 17;
     LayerMask eclipseLayers;
 
@@ -77,7 +77,7 @@ public class EclipsePlayer : MonoBehaviour {
         energyBarLength = (Screen.width / 2) * (energy / (float)maxEnergy);
         if(energy < maxEnergy)
         {
-            energy += 0.75f;
+            energy += 0.35f;
             if (energy > maxEnergy) energy = maxEnergy;
         }
         Controls();
@@ -127,11 +127,11 @@ public class EclipsePlayer : MonoBehaviour {
             GameObject go = hit.collider.gameObject;
             if (go.GetComponent<SkeletonEnemyController>() != null)
             {
-                if(energy > 30.0f)
+                if(energy > 40.0f)
                 {
                     SkeletonEnemyController skelly = go.GetComponent<SkeletonEnemyController>();
                     skelly.TakeDamage(1);
-                    energy -= 30.0f;
+                    energy -= 40.0f;
                 }
             }
             if (go.GetComponent<PlaySoundOnPickup>() != null) // TODO yeah this name is starting to become extremely bad
