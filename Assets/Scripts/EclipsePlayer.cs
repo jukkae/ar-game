@@ -134,10 +134,10 @@ public class EclipsePlayer : MonoBehaviour {
                     energy -= 40.0f;
                 }
             }
-            if (go.GetComponent<PlaySoundOnPickup>() != null) // TODO yeah this name is starting to become extremely bad
+            if (go.GetComponent<EclipsePickable>() != null)
             {
-                PlaySoundOnPickup coin = go.GetComponent<PlaySoundOnPickup>();
-                coin.Pickup();
+                EclipsePickable pickable = go.GetComponent<EclipsePickable>();
+                pickable.Pickup();
                 score++;
                 FindObjectOfType<UIController>().SetCurrentNumberOfEclipseCoins(score);
             }

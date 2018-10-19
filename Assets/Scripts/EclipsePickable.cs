@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlaySoundOnPickup : MonoBehaviour {
+public class EclipsePickable : MonoBehaviour {
     public AudioClip collectSound;
     private ParticleSystem p;
+
+    public enum PickableType { COIN, CHEST, REGEN_POTION, DAMAGE_POTION, FIRE_POTION }
+    public PickableType pickableType;
 
     private void Start()
     {
@@ -13,9 +16,12 @@ public class PlaySoundOnPickup : MonoBehaviour {
 
     public void Pickup()
     {
-        p.transform.parent = null;
-        p.Emit(250);
-        Destroy(p, 5f);
+        if(p != null)
+        {
+            p.transform.parent = null;
+            p.Emit(250);
+            Destroy(p, 5f);
+        }
 
         AudioSource.PlayClipAtPoint(collectSound, transform.position);
         this.gameObject.SetActive(false);
