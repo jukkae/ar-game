@@ -137,8 +137,27 @@ public class EclipsePlayer : MonoBehaviour {
             if (go.GetComponent<EclipsePickable>() != null)
             {
                 EclipsePickable pickable = go.GetComponent<EclipsePickable>();
+                switch(pickable.pickableType)
+                {
+                    case EclipsePickable.PickableType.COIN:
+                        score++;
+                        break;
+                    case EclipsePickable.PickableType.CHEST:
+                        score += 10; // TODO balance!
+                        break;
+                    case EclipsePickable.PickableType.REGEN_POTION:
+                        throw new System.NotImplementedException("You need to implement this!");
+                        break;
+                    case EclipsePickable.PickableType.DAMAGE_POTION:
+                        throw new System.NotImplementedException("You need to implement this!");
+                        break;
+                    case EclipsePickable.PickableType.FIRE_POTION:
+                        throw new System.NotImplementedException("You need to implement this!");
+                        break;
+                    default:
+                        throw new System.NotImplementedException("You need to implement this!");
+                }
                 pickable.Pickup();
-                score++;
                 FindObjectOfType<UIController>().SetCurrentNumberOfEclipseCoins(score);
             }
         }
