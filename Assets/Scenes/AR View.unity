@@ -1317,7 +1317,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 8.000011, y: 0.000030517578}
+  m_AnchoredPosition: {x: 7.999996, y: 0}
   m_SizeDelta: {x: 190, y: 190}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &368881917
@@ -5440,6 +5440,8 @@ MonoBehaviour:
   changeMaterialToDebug: 1
   meshDebugMaterial: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   coinPrefab: {fileID: 1203825086308630, guid: 157ba0b1f0f52e147aa83c63c974301c, type: 2}
+  chestPrefab: {fileID: 1606560108816982, guid: e16e5eab2a867bd4fbed79a94012a00e,
+    type: 2}
   coinsParent: {fileID: 1026476359}
   enemyPrefab: {fileID: 1688078650759922, guid: 18686906e33b07f449e8ddef51a8aeff,
     type: 2}

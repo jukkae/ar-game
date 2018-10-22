@@ -12,9 +12,11 @@ public class EclipseRealm : MonoBehaviour {
     public Material meshDebugMaterial;
     GameObject obstacleMesh;
     public GameObject coinPrefab;
+    public GameObject chestPrefab;
     public GameObject coinsParent;
 
     public GameObject enemyPrefab;
+
     int counter = 0; // TODO for dev purposes only, remove
 
     private enum ReachabilityMode {CAST, PATH}
@@ -42,7 +44,12 @@ public class EclipseRealm : MonoBehaviour {
                 {
                     SpawnCoin();
                 }
-                if(IsEnemySpawnTime(counter))
+                if (IsChestSpawnTime(counter))
+                {
+                    Debug.Log("chest spawn");
+                    SpawnChest();
+                }
+                if (IsEnemySpawnTime(counter))
                 {
                     SpawnEnemy();
                 }
@@ -66,6 +73,12 @@ public class EclipseRealm : MonoBehaviour {
         return false;
     }
 
+    bool IsChestSpawnTime(int frame)
+    {
+        float probability = (1f / 60f) / 10f; // once in 10 seconds on average
+        return Random.Range(0.0f, 1.0f) < probability;
+    }
+
     public void InitializeRealm (WorldController worldController)
     {
         this.worldController = worldController;
@@ -85,6 +98,8 @@ public class EclipseRealm : MonoBehaviour {
         {
             FindObjectOfType<UIController>().HideTotalNumberText();
         }
+
+        MovePlayerToRandomPosition();
 
         initialized = true;
         Debug.Log("Eclipse Realm initialized");
@@ -111,8 +126,11 @@ public class EclipseRealm : MonoBehaviour {
     void SpawnCoin()
     {
         Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+        int timeout = 100;
         while(true)
         {
+            timeout--;
+            if (timeout <= 0) return;
             float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
             float y = 1.0f;
             float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
@@ -121,6 +139,24 @@ public class EclipseRealm : MonoBehaviour {
             {
                 GameObject coin = Instantiate(coinPrefab, position, Quaternion.Euler(0, 0, 90));
                 coin.transform.parent = coinsParent.transform;
+                return;
+            }
+        }
+    }
+
+    void SpawnChest()
+    {
+        Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+        while (true)
+        {
+            float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
+            float y = 0.5f;
+            float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
+            Vector3 position = new Vector3(x, y, z);
+            if (IsReachable(position, ReachabilityMode.PATH))
+            {
+                GameObject chest = Instantiate(chestPrefab, position, Quaternion.Euler(-90, 0, 0));
+                chest.transform.parent = coinsParent.transform;
                 return;
             }
         }
@@ -146,6 +182,28 @@ public class EclipseRealm : MonoBehaviour {
         FindObjectOfType<UIController>().SetTotalNumberOfEclipseCoins(numberOfCoins);
     }
 
+    void MovePlayerToRandomPosition()
+    {
+        Debug.Log("Moving player");
+        EclipsePlayer player = FindObjectOfType<EclipsePlayer>();
+
+        Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+        while (true)
+        {
+            float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
+            float y = areaBounds.min.y + 0.5f;
+            float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
+            Vector3 position = new Vector3(x, y, z);
+            if (IsReachable(position, ReachabilityMode.CAST))
+            {
+                Debug.Log("Position found: " + position);
+                player.transform.position = position;
+                return;
+            }
+            else Debug.Log("Position not good: " + position);
+        }
+    }
+
     bool IsReachable(Vector3 position, ReachabilityMode mode = ReachabilityMode.PATH) // TODO quick-and-dirty heuristic, doesn't yet actually check if reachable, only if on open floor
     {
         switch (mode)
@@ -163,7 +221,9 @@ public class EclipseRealm : MonoBehaviour {
                 return false;
             case ReachabilityMode.PATH:
                 NavMeshPath path = new NavMeshPath();
-                NavMesh.CalculatePath(position, new Vector3(0, 0, 0), 1, path);
+                EclipsePlayer player = FindObjectOfType<EclipsePlayer>();
+                Vector3 playerPosition = player.transform.position;
+                NavMesh.CalculatePath(position, playerPosition, 1, path);
 
                 bool debug = false;
                 if(debug) {
