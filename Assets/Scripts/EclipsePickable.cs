@@ -6,7 +6,7 @@ public class EclipsePickable : MonoBehaviour {
     public AudioClip collectSound;
     private ParticleSystem p;
 
-    public enum PickableType { COIN, CHEST, REGEN_POTION, DAMAGE_POTION, FIRE_POTION }
+    public enum PickableType { COIN, CHEST, REGEN_POTION, DAMAGE_POTION, LONG_RANGE_POTION }
     public PickableType pickableType;
 
     private void Start()

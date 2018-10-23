@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 114801250904424854}
   - component: {fileID: 114860123504238134}
   m_Layer: 0
-  m_Name: Fire potion
+  m_Name: Long range potion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

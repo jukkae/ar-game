@@ -27,6 +27,10 @@ public class EclipsePlayer : MonoBehaviour {
     public float fastRegenLeft = 0.0f;
     public GameObject fastRegenIndicator;
 
+    public float dualDamageTime = 600.0f;
+    public float dualDamageLeft = 0.0f;
+    public GameObject dualDamageIndicator;
+
     public enum FadeDirection { IN, OUT };
 
     public AudioClip damageSound;
@@ -36,7 +40,8 @@ public class EclipsePlayer : MonoBehaviour {
         if (cam == null) Debug.Log("Camera not found!");
         eclipseLayers = 1 << enemyLayer;
         fastRegenIndicator.SetActive(false);
-	}
+        dualDamageIndicator.SetActive(false);
+    }
 
     public void TakeDamage(float damage, GameObject attacker) {
         AudioSource.PlayClipAtPoint(damageSound, transform.position);
@@ -91,6 +96,11 @@ public class EclipsePlayer : MonoBehaviour {
             fastRegenLeft -= 1.0f;
             if (fastRegenLeft <= 0.0f) fastRegenLeft = 0.0f;
         }
+        if (dualDamageLeft > 0.0f)
+        {
+            dualDamageLeft -= 1.0f;
+            if (dualDamageLeft <= 0.0f) dualDamageLeft = 0.0f;
+        }
         Controls();
     }
     
@@ -109,6 +119,14 @@ public class EclipsePlayer : MonoBehaviour {
         else
         {
             fastRegenIndicator.SetActive(false);
+        }
+        if (dualDamageLeft > 0.0f)
+        {
+            dualDamageIndicator.SetActive(true);
+        }
+        else
+        {
+            dualDamageIndicator.SetActive(false);
         }
     }
 
@@ -149,7 +167,7 @@ public class EclipsePlayer : MonoBehaviour {
                 if(energy > 40.0f)
                 {
                     SkeletonEnemyController skelly = go.GetComponent<SkeletonEnemyController>();
-                    skelly.TakeDamage(1);
+                    skelly.TakeDamage(dualDamageLeft > 0.0f ? 2 : 1);
                     energy -= 40.0f;
                 }
             }
@@ -168,9 +186,9 @@ public class EclipsePlayer : MonoBehaviour {
                         fastRegenLeft = fastRegenTime;
                         break;
                     case EclipsePickable.PickableType.DAMAGE_POTION:
-                        throw new System.NotImplementedException("You need to implement this!");
+                        dualDamageLeft = dualDamageTime;
                         break;
-                    case EclipsePickable.PickableType.FIRE_POTION:
+                    case EclipsePickable.PickableType.LONG_RANGE_POTION:
                         throw new System.NotImplementedException("You need to implement this!");
                         break;
                     default:

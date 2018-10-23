@@ -19,7 +19,7 @@ public class EclipseRealm : MonoBehaviour {
 
     public GameObject regenPotionPrefab;
     public GameObject damagePotionPrefab;
-    public GameObject firePotionPrefab;
+    public GameObject longRangePotionPrefab;
 
     int counter = 0; // TODO for dev purposes only, remove
 
@@ -61,6 +61,11 @@ public class EclipseRealm : MonoBehaviour {
                 {
                     SpawnRegenPotion();
                 }
+
+                if (IsDamagePotionSpawnTime(counter))
+                {
+                    SpawnDamagePotion();
+                }
             }
         }
 	}
@@ -88,6 +93,12 @@ public class EclipseRealm : MonoBehaviour {
     }
 
     bool IsRegenPotionSpawnTime(int frame)
+    {
+        float probability = (1f / 60f) / 10f; // once in 10 seconds on average
+        return Random.Range(0.0f, 1.0f) < probability;
+    }
+
+    bool IsDamagePotionSpawnTime(int frame)
     {
         float probability = (1f / 60f) / 10f; // once in 10 seconds on average
         return Random.Range(0.0f, 1.0f) < probability;
@@ -232,6 +243,36 @@ public class EclipseRealm : MonoBehaviour {
                 {
                     GameObject regenPotion = Instantiate(regenPotionPrefab, position, Quaternion.Euler(-90, 0, 0));
                     regenPotion.transform.parent = coinsParent.transform;
+                    return;
+                }
+            }
+            if (timeout <= -100) return;
+        }
+    }
+
+    void SpawnDamagePotion()
+    {
+        Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+        int timeout = 100;
+        while (true)
+        {
+            timeout--;
+            float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
+            float y = 0.5f;
+            float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
+            Vector3 position = new Vector3(x, y, z);
+            if (IsReachable(position, ReachabilityMode.PATH))
+            {
+                GameObject damagePotion = Instantiate(damagePotionPrefab, position, Quaternion.Euler(-90, 0, 0));
+                damagePotion.transform.parent = coinsParent.transform;
+                return;
+            }
+            if (timeout <= 0)
+            {
+                if (IsReachable(position, ReachabilityMode.CAST))
+                {
+                    GameObject damagePotion = Instantiate(damagePotionPrefab, position, Quaternion.Euler(-90, 0, 0));
+                    damagePotion.transform.parent = coinsParent.transform;
                     return;
                 }
             }
