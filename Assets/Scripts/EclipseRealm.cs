@@ -17,6 +17,10 @@ public class EclipseRealm : MonoBehaviour {
 
     public GameObject enemyPrefab;
 
+    public GameObject regenPotionPrefab;
+    public GameObject damagePotionPrefab;
+    public GameObject firePotionPrefab;
+
     int counter = 0; // TODO for dev purposes only, remove
 
     private enum ReachabilityMode {CAST, PATH}
@@ -53,6 +57,10 @@ public class EclipseRealm : MonoBehaviour {
                 {
                     SpawnEnemy();
                 }
+                if (IsRegenPotionSpawnTime(counter))
+                {
+                    SpawnRegenPotion();
+                }
             }
         }
 	}
@@ -74,6 +82,12 @@ public class EclipseRealm : MonoBehaviour {
     }
 
     bool IsChestSpawnTime(int frame)
+    {
+        float probability = (1f / 60f) / 10f; // once in 10 seconds on average
+        return Random.Range(0.0f, 1.0f) < probability;
+    }
+
+    bool IsRegenPotionSpawnTime(int frame)
     {
         float probability = (1f / 60f) / 10f; // once in 10 seconds on average
         return Random.Range(0.0f, 1.0f) < probability;
@@ -108,10 +122,12 @@ public class EclipseRealm : MonoBehaviour {
     void SpawnEnemy()
     {
         Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+        int timeout = 100;
         while (true)
         {
+            timeout--;
             float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
-            float y = 0.35f;
+            float y = areaBounds.min.y + 0.5f;
             float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
             Vector3 position = new Vector3(x, y, z);
             if (IsReachable(position, ReachabilityMode.PATH))
@@ -120,6 +136,16 @@ public class EclipseRealm : MonoBehaviour {
                 enemy.transform.parent = coinsParent.transform;
                 return;
             }
+            if(timeout <= 0)
+            {
+                if (IsReachable(position, ReachabilityMode.CAST))
+                {
+                    GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.Euler(0, 0, 90));
+                    enemy.transform.parent = coinsParent.transform;
+                    return;
+                }
+            }
+            if (timeout <= -100) return;
         }
     }
 
@@ -130,7 +156,6 @@ public class EclipseRealm : MonoBehaviour {
         while(true)
         {
             timeout--;
-            if (timeout <= 0) return;
             float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
             float y = 1.0f;
             float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
@@ -141,14 +166,26 @@ public class EclipseRealm : MonoBehaviour {
                 coin.transform.parent = coinsParent.transform;
                 return;
             }
+            if(timeout <= 0)
+            {
+                if (IsReachable(position, ReachabilityMode.CAST))
+                {
+                    GameObject coin = Instantiate(coinPrefab, position, Quaternion.Euler(0, 0, 90));
+                    coin.transform.parent = coinsParent.transform;
+                    return;
+                }
+            }
+            if (timeout <= -100) return;
         }
     }
 
     void SpawnChest()
     {
         Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+        int timeout = 100;
         while (true)
         {
+            timeout--;
             float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
             float y = 0.5f;
             float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
@@ -159,6 +196,46 @@ public class EclipseRealm : MonoBehaviour {
                 chest.transform.parent = coinsParent.transform;
                 return;
             }
+            if(timeout <= 0)
+            {
+                if (IsReachable(position, ReachabilityMode.CAST))
+                {
+                    GameObject chest = Instantiate(chestPrefab, position, Quaternion.Euler(-90, 0, 0));
+                    chest.transform.parent = coinsParent.transform;
+                    return;
+                }
+            }
+            if (timeout <= -100) return;
+        }
+    }
+
+    void SpawnRegenPotion()
+    {
+        Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+        int timeout = 100;
+        while (true)
+        {
+            timeout--;
+            float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
+            float y = 0.5f;
+            float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
+            Vector3 position = new Vector3(x, y, z);
+            if (IsReachable(position, ReachabilityMode.PATH))
+            {
+                GameObject regenPotion = Instantiate(regenPotionPrefab, position, Quaternion.Euler(-90, 0, 0));
+                regenPotion.transform.parent = coinsParent.transform;
+                return;
+            }
+            if (timeout <= 0)
+            {
+                if (IsReachable(position, ReachabilityMode.CAST))
+                {
+                    GameObject regenPotion = Instantiate(regenPotionPrefab, position, Quaternion.Euler(-90, 0, 0));
+                    regenPotion.transform.parent = coinsParent.transform;
+                    return;
+                }
+            }
+            if (timeout <= -100) return;
         }
     }
 

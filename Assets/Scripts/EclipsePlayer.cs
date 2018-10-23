@@ -22,6 +22,11 @@ public class EclipsePlayer : MonoBehaviour {
     LayerMask eclipseLayers;
 
     public GameObject damageIndicator;
+
+    public float fastRegenTime = 600.0f;
+    public float fastRegenLeft = 0.0f;
+    public GameObject fastRegenIndicator;
+
     public enum FadeDirection { IN, OUT };
 
     public AudioClip damageSound;
@@ -30,6 +35,7 @@ public class EclipsePlayer : MonoBehaviour {
         cam = GetComponent<Camera>();
         if (cam == null) Debug.Log("Camera not found!");
         eclipseLayers = 1 << enemyLayer;
+        fastRegenIndicator.SetActive(false);
 	}
 
     public void TakeDamage(float damage, GameObject attacker) {
@@ -77,8 +83,13 @@ public class EclipsePlayer : MonoBehaviour {
         energyBarLength = (Screen.width / 2) * (energy / (float)maxEnergy);
         if(energy < maxEnergy)
         {
-            energy += 0.35f;
+            energy += fastRegenLeft > 0.0f ? 1.4f : 0.35f; // TODO what are good rates?
             if (energy > maxEnergy) energy = maxEnergy;
+        }
+        if(fastRegenLeft > 0.0f)
+        {
+            fastRegenLeft -= 1.0f;
+            if (fastRegenLeft <= 0.0f) fastRegenLeft = 0.0f;
         }
         Controls();
     }
@@ -90,6 +101,14 @@ public class EclipsePlayer : MonoBehaviour {
         if (health == 0)
         {
             GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "You're dead!");
+        }
+        if(fastRegenLeft > 0.0f)
+        {
+            fastRegenIndicator.SetActive(true);
+        }
+        else
+        {
+            fastRegenIndicator.SetActive(false);
         }
     }
 
@@ -146,7 +165,7 @@ public class EclipsePlayer : MonoBehaviour {
                         score += 10; // TODO balance!
                         break;
                     case EclipsePickable.PickableType.REGEN_POTION:
-                        throw new System.NotImplementedException("You need to implement this!");
+                        fastRegenLeft = fastRegenTime;
                         break;
                     case EclipsePickable.PickableType.DAMAGE_POTION:
                         throw new System.NotImplementedException("You need to implement this!");
