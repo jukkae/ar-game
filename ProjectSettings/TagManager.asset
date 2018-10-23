@@ -9,6 +9,9 @@ TagManager:
   - Eclipse Item
   - AR obstacle
   - VFX
+  - Long range potion
+  - Regen potion
+  - Damage potion
   layers:
   - Default
   - TransparentFX

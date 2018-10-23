@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 114611337594984462}
   m_Layer: 0
   m_Name: Regen potion
-  m_TagString: Eclipse Item
+  m_TagString: Regen potion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -50,7 +50,6 @@ public class EclipseRealm : MonoBehaviour {
                 }
                 if (IsChestSpawnTime(counter))
                 {
-                    Debug.Log("chest spawn");
                     SpawnChest();
                 }
                 if (IsEnemySpawnTime(counter))
@@ -61,10 +60,13 @@ public class EclipseRealm : MonoBehaviour {
                 {
                     SpawnRegenPotion();
                 }
-
                 if (IsDamagePotionSpawnTime(counter))
                 {
                     SpawnDamagePotion();
+                }
+                if (IsLongRangePotionSpawnTime(counter))
+                {
+                    SpawnLongRangePotion();
                 }
             }
         }
@@ -88,19 +90,28 @@ public class EclipseRealm : MonoBehaviour {
 
     bool IsChestSpawnTime(int frame)
     {
-        float probability = (1f / 60f) / 10f; // once in 10 seconds on average
+        float probability = (1f / 60f) / 20f; // once in 20 seconds on average
         return Random.Range(0.0f, 1.0f) < probability;
     }
 
     bool IsRegenPotionSpawnTime(int frame)
     {
-        float probability = (1f / 60f) / 10f; // once in 10 seconds on average
+        if (GameObject.FindGameObjectsWithTag("Regen potion").Length > 1) return false;
+        float probability = (1f / 60f) / 15f; // once in 15 seconds on average
         return Random.Range(0.0f, 1.0f) < probability;
     }
 
     bool IsDamagePotionSpawnTime(int frame)
     {
-        float probability = (1f / 60f) / 10f; // once in 10 seconds on average
+        if (GameObject.FindGameObjectsWithTag("Damage potion").Length > 1) return false;
+        float probability = (1f / 60f) / 15f; // once in 15 seconds on average
+        return Random.Range(0.0f, 1.0f) < probability;
+    }
+
+    bool IsLongRangePotionSpawnTime(int frame)
+    {
+        if (GameObject.FindGameObjectsWithTag("Long range potion").Length > 1) return false;
+        float probability = (1f / 60f) / 15f; // once in 15 seconds on average
         return Random.Range(0.0f, 1.0f) < probability;
     }
 
@@ -233,7 +244,7 @@ public class EclipseRealm : MonoBehaviour {
             Vector3 position = new Vector3(x, y, z);
             if (IsReachable(position, ReachabilityMode.PATH))
             {
-                GameObject regenPotion = Instantiate(regenPotionPrefab, position, Quaternion.Euler(-90, 0, 0));
+                GameObject regenPotion = Instantiate(regenPotionPrefab, position, Quaternion.Euler(-45, 0, 0));
                 regenPotion.transform.parent = coinsParent.transform;
                 return;
             }
@@ -241,7 +252,7 @@ public class EclipseRealm : MonoBehaviour {
             {
                 if (IsReachable(position, ReachabilityMode.CAST))
                 {
-                    GameObject regenPotion = Instantiate(regenPotionPrefab, position, Quaternion.Euler(-90, 0, 0));
+                    GameObject regenPotion = Instantiate(regenPotionPrefab, position, Quaternion.Euler(-45, 0, 0));
                     regenPotion.transform.parent = coinsParent.transform;
                     return;
                 }
@@ -263,7 +274,7 @@ public class EclipseRealm : MonoBehaviour {
             Vector3 position = new Vector3(x, y, z);
             if (IsReachable(position, ReachabilityMode.PATH))
             {
-                GameObject damagePotion = Instantiate(damagePotionPrefab, position, Quaternion.Euler(-90, 0, 0));
+                GameObject damagePotion = Instantiate(damagePotionPrefab, position, Quaternion.Euler(-45, 0, 0));
                 damagePotion.transform.parent = coinsParent.transform;
                 return;
             }
@@ -271,8 +282,38 @@ public class EclipseRealm : MonoBehaviour {
             {
                 if (IsReachable(position, ReachabilityMode.CAST))
                 {
-                    GameObject damagePotion = Instantiate(damagePotionPrefab, position, Quaternion.Euler(-90, 0, 0));
+                    GameObject damagePotion = Instantiate(damagePotionPrefab, position, Quaternion.Euler(-45, 0, 0));
                     damagePotion.transform.parent = coinsParent.transform;
+                    return;
+                }
+            }
+            if (timeout <= -100) return;
+        }
+    }
+
+    void SpawnLongRangePotion()
+    {
+        Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
+        int timeout = 100;
+        while (true)
+        {
+            timeout--;
+            float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
+            float y = 0.5f;
+            float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
+            Vector3 position = new Vector3(x, y, z);
+            if (IsReachable(position, ReachabilityMode.PATH))
+            {
+                GameObject longRangePotion = Instantiate(longRangePotionPrefab, position, Quaternion.Euler(-45, 0, 0));
+                longRangePotion.transform.parent = coinsParent.transform;
+                return;
+            }
+            if (timeout <= 0)
+            {
+                if (IsReachable(position, ReachabilityMode.CAST))
+                {
+                    GameObject longRangePotion = Instantiate(longRangePotionPrefab, position, Quaternion.Euler(-45, 0, 0));
+                    longRangePotion.transform.parent = coinsParent.transform;
                     return;
                 }
             }

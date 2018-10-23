@@ -31,6 +31,10 @@ public class EclipsePlayer : MonoBehaviour {
     public float dualDamageLeft = 0.0f;
     public GameObject dualDamageIndicator;
 
+    public float longRangeTime = 600.0f;
+    public float longRangeLeft = 0.0f;
+    public GameObject longRangeIndicator;
+
     public enum FadeDirection { IN, OUT };
 
     public AudioClip damageSound;
@@ -41,6 +45,7 @@ public class EclipsePlayer : MonoBehaviour {
         eclipseLayers = 1 << enemyLayer;
         fastRegenIndicator.SetActive(false);
         dualDamageIndicator.SetActive(false);
+        longRangeIndicator.SetActive(false);
     }
 
     public void TakeDamage(float damage, GameObject attacker) {
@@ -101,6 +106,11 @@ public class EclipsePlayer : MonoBehaviour {
             dualDamageLeft -= 1.0f;
             if (dualDamageLeft <= 0.0f) dualDamageLeft = 0.0f;
         }
+        if (longRangeLeft > 0.0f)
+        {
+            longRangeLeft -= 1.0f;
+            if (longRangeLeft <= 0.0f) longRangeLeft = 0.0f;
+        }
         Controls();
     }
     
@@ -127,6 +137,14 @@ public class EclipsePlayer : MonoBehaviour {
         else
         {
             dualDamageIndicator.SetActive(false);
+        }
+        if (longRangeLeft > 0.0f)
+        {
+            longRangeIndicator.SetActive(true);
+        }
+        else
+        {
+            longRangeIndicator.SetActive(false);
         }
     }
 
@@ -159,7 +177,7 @@ public class EclipsePlayer : MonoBehaviour {
             return;
         position = touch.position;
 #endif
-        if (Physics.Raycast(cam.ScreenPointToRay(position), out hit, interactRange, layerMask))
+        if (Physics.Raycast(cam.ScreenPointToRay(position), out hit, longRangeLeft > 0.0f ? interactRange * 3.0f : interactRange, layerMask)) // TODO range scaling?
         {
             GameObject go = hit.collider.gameObject;
             if (go.GetComponent<SkeletonEnemyController>() != null)
@@ -183,13 +201,13 @@ public class EclipsePlayer : MonoBehaviour {
                         score += 10; // TODO balance!
                         break;
                     case EclipsePickable.PickableType.REGEN_POTION:
-                        fastRegenLeft = fastRegenTime;
+                        fastRegenLeft += fastRegenTime;
                         break;
                     case EclipsePickable.PickableType.DAMAGE_POTION:
-                        dualDamageLeft = dualDamageTime;
+                        dualDamageLeft += dualDamageTime;
                         break;
                     case EclipsePickable.PickableType.LONG_RANGE_POTION:
-                        throw new System.NotImplementedException("You need to implement this!");
+                        longRangeLeft += longRangeTime;
                         break;
                     default:
                         throw new System.NotImplementedException("You need to implement this!");
