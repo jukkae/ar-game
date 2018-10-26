@@ -22,6 +22,7 @@ public class EclipseRealm : MonoBehaviour {
     public GameObject longRangePotionPrefab;
 
     int counter = 0; // TODO for dev purposes only, remove
+    int numberOfCoinsSpawned = 0;
 
     private enum ReachabilityMode {CAST, PATH}
     public enum GameMode {TIME, SURVIVAL}
@@ -178,14 +179,31 @@ public class EclipseRealm : MonoBehaviour {
         while(true)
         {
             timeout--;
-            float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
-            float y = 1.0f;
-            float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
+            float x, y, z;
+            if(numberOfCoinsSpawned < 5)
+            {
+                float radius = 5.0f;
+                Vector2 point = radius * Random.insideUnitCircle;
+                EclipsePlayer player = FindObjectOfType<EclipsePlayer>();
+                Vector2 offset = new Vector2(player.transform.position.x, player.transform.position.z);
+                Vector2 location = point + offset;
+
+                x = location.x;
+                y = 1.0f;
+                z = location.y; // Coordinate systems don't match intuition
+            }
+            else
+            {
+                x = Random.Range(areaBounds.min.x, areaBounds.max.x);
+                y = 1.0f;
+                z = Random.Range(areaBounds.min.z, areaBounds.max.z);
+            }
             Vector3 position = new Vector3(x, y, z);
             if (IsReachable(position, ReachabilityMode.PATH))
             {
                 GameObject coin = Instantiate(coinPrefab, position, Quaternion.Euler(0, 0, 90));
                 coin.transform.parent = coinsParent.transform;
+                numberOfCoinsSpawned++;
                 return;
             }
             if(timeout <= 0)
@@ -194,6 +212,7 @@ public class EclipseRealm : MonoBehaviour {
                 {
                     GameObject coin = Instantiate(coinPrefab, position, Quaternion.Euler(0, 0, 90));
                     coin.transform.parent = coinsParent.transform;
+                    numberOfCoinsSpawned++;
                     return;
                 }
             }
