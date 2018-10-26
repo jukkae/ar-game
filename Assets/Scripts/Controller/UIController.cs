@@ -51,24 +51,17 @@ public class UIController : MonoBehaviour
 
         debugUI.SetActive(App.config.debug);
 
-        playerNameText.text = player.name;
         ChangeUI(StateManager.sceneState);
     }
 
     public void EnableEclipseRealmUI()
     {
-        defaultCanvas.transform.Find("Player UI").gameObject.SetActive(false);
-        defaultCanvas.transform.Find("Inventory").gameObject.SetActive(false);
-        defaultCanvas.transform.Find("Equipped Items").gameObject.SetActive(false);
         defaultCanvas.transform.Find("Eclipse Realm UI").gameObject.SetActive(true);
     }
 
     public void DisableEclipseRealmUI()
     {
         defaultCanvas.transform.Find("Eclipse Realm UI").gameObject.SetActive(false);
-        defaultCanvas.transform.Find("Player UI").gameObject.SetActive(true);
-        defaultCanvas.transform.Find("Inventory").gameObject.SetActive(true);
-        defaultCanvas.transform.Find("Equipped Items").gameObject.SetActive(true);
     }
 
     /**<summary> Change UI canvas between default and minigame </summary>*/
@@ -137,8 +130,7 @@ public class UIController : MonoBehaviour
     private void OnExpUpdated(int experience, int nextLevel)
     {
         int levelExperience = experience - player.level * nextLevel;
-        experienceText.text = levelExperience + "/" + nextLevel + " Xp";
-        levelText.text = (experience / nextLevel).ToString();
+
         DOTween.To(() => levelIndicator.fillAmount, x => levelIndicator.fillAmount = x, levelExperience / (float)nextLevel, 0.8f).SetEase(Ease.OutSine);
     }
 
@@ -151,7 +143,7 @@ public class UIController : MonoBehaviour
     /**<summary> Called when player credits is updated </summary>*/
     private void OnCreditsUpdated(int credits)
     {
-        creditsText.text = credits + " Cr";
+
     }
 
     /**<summary> Called when player Active Item is changed </summary>*/
