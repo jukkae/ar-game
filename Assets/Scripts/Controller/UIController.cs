@@ -218,11 +218,6 @@ public class UIController : MonoBehaviour
         }*/
     }
 
-    public void SetTotalNumberOfEclipseCoins(int n)
-    {
-        defaultCanvas.transform.Find("Eclipse Realm UI/Player Stats/Total coins text").GetComponent<Text>().text = "/ " + n;
-    }
-
     public void SetCurrentNumberOfEclipseCoins(int n)
     {
         defaultCanvas.transform.Find("Eclipse Realm UI/Player Stats/Current coins text").GetComponent<Text>().text = n.ToString();
@@ -233,8 +228,4 @@ public class UIController : MonoBehaviour
         defaultCanvas.transform.Find("Eclipse Realm UI/Player Stats/Current coins text").GetComponent<Text>().text = s;
     }
 
-    public void HideTotalNumberText()
-    {
-        defaultCanvas.transform.Find("Eclipse Realm UI/Player Stats/Total coins text").gameObject.SetActive(false);
-    }
 }

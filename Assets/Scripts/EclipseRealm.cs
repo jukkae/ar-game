@@ -131,10 +131,6 @@ public class EclipseRealm : MonoBehaviour {
         {
             PlaceCoins();
         }
-        if(gameMode == GameMode.SURVIVAL)
-        {
-            FindObjectOfType<UIController>().HideTotalNumberText();
-        }
 
         MovePlayerToRandomPosition();
 
@@ -357,7 +353,6 @@ public class EclipseRealm : MonoBehaviour {
                 }
             }
         }
-        FindObjectOfType<UIController>().SetTotalNumberOfEclipseCoins(numberOfCoins);
     }
 
     void MovePlayerToRandomPosition()
