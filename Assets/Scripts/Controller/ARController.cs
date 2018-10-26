@@ -17,6 +17,7 @@ public class ARController : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private GameObject trackedPlaneVisualiser;
     [SerializeField] private bool disableARControl;
+    public bool lerpTransform;
 
     private TextureReader textureReader;
     private Transform tr, cameraTransform;
@@ -170,16 +171,37 @@ public class ARController : MonoBehaviour
         worldAngle = locationData.angle - angleOnImageCapture;
 
         // Align ARCore visuals (planes and point cloud)
-
-        LocationData location = CalculateNewLocation(moveOrigin, worldAngle, rotateOrigin, Frame.Pose.position, Frame.Pose.rotation);
-        tr.position = location.position - Frame.Pose.position;
-        tr.rotation = Quaternion.identity;
-        tr.RotateAround(location.position, Vector3.up, worldAngle);
+        if(!lerpTransform)
+        {
+            LocationData location = CalculateNewLocation(moveOrigin, worldAngle, rotateOrigin, Frame.Pose.position, Frame.Pose.rotation);
+            tr.position = location.position - Frame.Pose.position;
+            tr.rotation = Quaternion.identity;
+            tr.RotateAround(location.position, Vector3.up, worldAngle);
+        }
+        else
+        {
+            LocationData location = CalculateNewLocation(moveOrigin, worldAngle, rotateOrigin, Frame.Pose.position, Frame.Pose.rotation);
+            StartCoroutine(LerpToLocationData(location, 1.0f));
+        }
 
         // Update world objects
         worldController.UpdateObjects();
 
         locationRequestInProgress = false;
+    }
+
+    private IEnumerator LerpToLocationData(LocationData destinationData, float timeToMove) // TODO doesn't work?
+    {
+        var currentPos = tr.position;
+        var currentRot = tr.rotation;
+        var t = 0.0f;
+        while(t < timeToMove)
+        {
+            t += Time.deltaTime;
+            transform.position = Vector3.Lerp(currentPos, destinationData.position, (t/timeToMove));
+            transform.rotation = Quaternion.Lerp(currentRot, destinationData.rotation, (t/timeToMove));
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     /**<summary> Save snapshot of Pose for delta offset </summary>*/

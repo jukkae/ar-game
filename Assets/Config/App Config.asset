@@ -13,4 +13,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debug: 1
   apiURL: http://crowdsensing.cs.hut.fi:5004
-  locationRefreshRate: 0.25
+  locationRefreshRate: 3
