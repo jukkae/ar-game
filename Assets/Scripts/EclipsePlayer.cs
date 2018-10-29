@@ -118,7 +118,10 @@ public class EclipsePlayer : MonoBehaviour {
     void SetPickableHighlights()
     {
         List<GameObject> coins = new List<GameObject>(GameObject.FindGameObjectsWithTag("Eclipse Item"));
-        foreach(var coin in coins)
+        coins.AddRange(GameObject.FindGameObjectsWithTag("Regen potion"));
+        coins.AddRange(GameObject.FindGameObjectsWithTag("Damage potion"));
+        coins.AddRange(GameObject.FindGameObjectsWithTag("Long range potion"));
+        foreach (var coin in coins)
         {
             if(Vector3.Distance(coin.transform.position, this.transform.position) < (longRangeLeft > 0.0f ? interactRange * 3.0f : interactRange)) // this is bad, i know, sorry
             {
