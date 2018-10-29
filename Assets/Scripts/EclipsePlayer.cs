@@ -112,6 +112,25 @@ public class EclipsePlayer : MonoBehaviour {
             if (longRangeLeft <= 0.0f) longRangeLeft = 0.0f;
         }
         Controls();
+        SetPickableHighlights();
+    }
+
+    void SetPickableHighlights()
+    {
+        List<GameObject> coins = new List<GameObject>(GameObject.FindGameObjectsWithTag("Eclipse Item"));
+        foreach(var coin in coins)
+        {
+            if(Vector3.Distance(coin.transform.position, this.transform.position) < (longRangeLeft > 0.0f ? interactRange * 3.0f : interactRange)) // this is bad, i know, sorry
+            {
+                var e = coin.GetComponent<EclipsePickable>().halo.emission;
+                e.enabled = true;
+            }
+            else
+            {
+                var e = coin.GetComponent<EclipsePickable>().halo.emission;
+                e.enabled = false;
+            }
+        }
     }
     
     void OnGUI()
