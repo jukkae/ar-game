@@ -147,6 +147,7 @@ public class EclipsePlayer : MonoBehaviour {
         if(fastRegenLeft > 0.0f)
         {
             fastRegenIndicator.SetActive(true);
+            fastRegenIndicator.GetComponent<UnityEngine.UI.Text>().text = "Fast regen: " + Mathf.FloorToInt(fastRegenLeft / 60);
         }
         else
         {
@@ -155,6 +156,7 @@ public class EclipsePlayer : MonoBehaviour {
         if (dualDamageLeft > 0.0f)
         {
             dualDamageIndicator.SetActive(true);
+            dualDamageIndicator.GetComponent<UnityEngine.UI.Text>().text = "Double damage: " + Mathf.FloorToInt(dualDamageLeft / 60);
         }
         else
         {
@@ -163,6 +165,7 @@ public class EclipsePlayer : MonoBehaviour {
         if (longRangeLeft > 0.0f)
         {
             longRangeIndicator.SetActive(true);
+            longRangeIndicator.GetComponent<UnityEngine.UI.Text>().text = "Long range: " + Mathf.FloorToInt(longRangeLeft / 60);
         }
         else
         {
