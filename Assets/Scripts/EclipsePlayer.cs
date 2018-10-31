@@ -163,7 +163,10 @@ public class EclipsePlayer : MonoBehaviour {
         DrawRect(new Rect(50, Screen.height - 70 - energyBarLength, 30, energyBarLength), energybarColor);
         if (health == 0)
         {
-            GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "You're dead!");
+            GUIStyle style = new GUIStyle();
+            style.alignment = TextAnchor.MiddleCenter;
+            style.fontSize = 48;
+            GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "You're dead!\nScore: " + score, style);
         }
         if(fastRegenLeft > 0.0f)
         {
