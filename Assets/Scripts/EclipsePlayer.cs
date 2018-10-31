@@ -38,7 +38,11 @@ public class EclipsePlayer : MonoBehaviour {
     public enum FadeDirection { IN, OUT };
 
     public AudioClip damageSound;
-    
+
+    private static Texture2D backgroundTexture;
+    private static GUIStyle textureStyle;
+
+
     void Start () {
         cam = GetComponent<Camera>();
         if (cam == null) Debug.Log("Camera not found!");
@@ -46,6 +50,9 @@ public class EclipsePlayer : MonoBehaviour {
         fastRegenIndicator.SetActive(false);
         dualDamageIndicator.SetActive(false);
         longRangeIndicator.SetActive(false);
+
+        backgroundTexture = Texture2D.whiteTexture;
+        textureStyle = new GUIStyle { normal = new GUIStyleState { background = backgroundTexture } };
     }
 
     public void TakeDamage(float damage, GameObject attacker) {
@@ -89,8 +96,8 @@ public class EclipsePlayer : MonoBehaviour {
 
 
     void Update () {
-        healthBarLength = (Screen.width / 2) * (health / (float)maxHealth);
-        energyBarLength = (Screen.width / 2) * (energy / (float)maxEnergy);
+        healthBarLength = (Screen.height / 2) * (health / (float)maxHealth);
+        energyBarLength = (Screen.height / 2) * (energy / (float)maxEnergy);
         if(energy < maxEnergy)
         {
             energy += fastRegenLeft > 0.0f ? 1.4f : 0.35f; // TODO what are good rates?
@@ -135,11 +142,25 @@ public class EclipsePlayer : MonoBehaviour {
             }
         }
     }
-    
+
+    public static void DrawRect(Rect position, Color color, GUIContent content = null)
+    {
+        var backgroundColor = GUI.backgroundColor;
+        GUI.backgroundColor = color;
+        GUI.Box(position, content ?? GUIContent.none, textureStyle);
+        GUI.backgroundColor = backgroundColor;
+    }
+
     void OnGUI()
     {
-        GUI.Box(new Rect(10, Screen.height - 30, healthBarLength, 20), health + "/" + maxHealth);
-        GUI.Box(new Rect(10, Screen.height - 70, energyBarLength, 20), energy + "/" + maxEnergy);
+        Color healthbarColor = Color.red;
+        healthbarColor.a = 0.5f;
+
+        Color energybarColor = Color.blue;
+        energybarColor.a = 0.5f;
+
+        DrawRect(new Rect(10, Screen.height - 70 - healthBarLength, 30, healthBarLength), healthbarColor);
+        DrawRect(new Rect(50, Screen.height - 70 - energyBarLength, 30, energyBarLength), energybarColor);
         if (health == 0)
         {
             GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "You're dead!");
