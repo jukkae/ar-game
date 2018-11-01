@@ -100,22 +100,22 @@ public class EclipsePlayer : MonoBehaviour {
         energyBarLength = (Screen.height / 2) * (energy / (float)maxEnergy);
         if(energy < maxEnergy)
         {
-            energy += fastRegenLeft > 0.0f ? 1.4f : 0.35f; // TODO what are good rates?
+            energy += Time.deltaTime * 60.0f * fastRegenLeft > 0.0f ? 1.4f : 0.35f; // TODO what are good rates?
             if (energy > maxEnergy) energy = maxEnergy;
         }
         if(fastRegenLeft > 0.0f)
         {
-            fastRegenLeft -= 1.0f;
+            fastRegenLeft -= Time.deltaTime * 60.0f * 1.0f;
             if (fastRegenLeft <= 0.0f) fastRegenLeft = 0.0f;
         }
         if (dualDamageLeft > 0.0f)
         {
-            dualDamageLeft -= 1.0f;
+            dualDamageLeft -= Time.deltaTime * 60.0f * 1.0f;
             if (dualDamageLeft <= 0.0f) dualDamageLeft = 0.0f;
         }
         if (longRangeLeft > 0.0f)
         {
-            longRangeLeft -= 1.0f;
+            longRangeLeft -= Time.deltaTime * 60.0f * 1.0f;
             if (longRangeLeft <= 0.0f) longRangeLeft = 0.0f;
         }
         Controls();
