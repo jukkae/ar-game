@@ -77,7 +77,7 @@ public class EclipseRealm : MonoBehaviour {
 	}
 
     // Shit. Working shit, but still shit. Sorry.
-    private int SpawnCounter = 30 * 60;
+    private int SpawnCounter = 10 * 60; // Spawn first enemy after 10 seconds
     private int EnemiesSpawned = 0;
     bool IsEnemySpawnTime(int frame)
     {
@@ -85,7 +85,7 @@ public class EclipseRealm : MonoBehaviour {
         if(SpawnCounter == 0)
         {
             EnemiesSpawned++;
-            SpawnCounter = (30 - 2 * EnemiesSpawned) * 60;
+            SpawnCounter = (26 - 2 * EnemiesSpawned) * 60; // After the first enemy, spawn the next one after 24 seconds, then make time shorter by 2 seconds each time
             if (SpawnCounter < 5 * 60) SpawnCounter = 5 * 60;
             return true;
         }
@@ -136,9 +136,23 @@ public class EclipseRealm : MonoBehaviour {
         }
 
         MovePlayerToRandomPosition();
+        GameObject.FindObjectOfType<EclipsePlayer>().showStatusBars = true;
 
         initialized = true;
         Debug.Log("Eclipse Realm initialized");
+        GameObject.FindObjectOfType<UIController>().Help();
+    }
+
+    public void Pause()
+    {
+        Time.timeScale = 0.0f;
+        //GameObject.FindObjectOfType<EclipsePlayer>().showStatusBars = false;
+    }
+
+    public void Unpause()
+    {
+        Time.timeScale = 1.0f;
+        //GameObject.FindObjectOfType<EclipsePlayer>().showStatusBars = true;
     }
 
     void SpawnEnemy()
@@ -148,9 +162,26 @@ public class EclipseRealm : MonoBehaviour {
         while (true)
         {
             timeout--;
-            float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
-            float y = areaBounds.min.y + 0.5f;
-            float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
+            float x, y, z;
+            // Spawning first enemies near the player turned out to be a rather punishing experience
+            //if(EnemiesSpawned <= 2) // spawn first enemies close
+            //{
+            //    float radius = 15.0f;
+            //    Vector2 point = radius * Random.insideUnitCircle;
+            //    EclipsePlayer player = FindObjectOfType<EclipsePlayer>();
+            //    Vector2 offset = new Vector2(player.transform.position.x, player.transform.position.z);
+            //    Vector2 location = point + offset;
+            //    x = location.x;
+            //    z = location.y; // coordinate systems don't match intuition
+            //}
+            //else
+            //{
+                x = Random.Range(areaBounds.min.x, areaBounds.max.x);
+                z = Random.Range(areaBounds.min.z, areaBounds.max.z);
+            //}
+
+            y = areaBounds.min.y + 0.5f;
+
             Vector3 position = new Vector3(x, y, z);
             if (IsReachable(position, ReachabilityMode.PATH))
             {

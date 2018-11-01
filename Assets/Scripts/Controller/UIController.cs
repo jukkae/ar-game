@@ -127,20 +127,21 @@ public class UIController : MonoBehaviour
             "Welcome to Eclipse Realm!\n" +
             "Try to find and collect as many coins as possible before the skeletons get you.\n" +
             "Pick up coins and items by tapping on them when you are close enough.\n" +
-            "Red bar is your health – when that runs out, it's game over.\n" +
-            "Blue bar is your attack energy – it refills on its own.\n" +
+            "The red bar on the left is your health – when that runs out, it's game over.\n" +
+            "The blue bar is your attack energy. It refills on its own.\n" +
             "Attack enemies by tapping on them.\n\n" +
             "Good luck!";
 
 
         DialogManager.ShowAlert("Help", helptext, true,
-            new DialogManager.DialogButton("OK", () => { Time.timeScale = 1.0f; }));
+            new DialogManager.DialogButton("OK", () => {
+                GameObject.FindObjectOfType<EclipseRealm>().Unpause();}));
     }
 
     IEnumerator PauseAfterTime(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        Time.timeScale = 0.0f;
+        GameObject.FindObjectOfType<EclipseRealm>().Pause();
     }
 
     /**<summary> Called when response is got from image based Location API server </summary>*/

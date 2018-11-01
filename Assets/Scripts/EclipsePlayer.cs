@@ -42,6 +42,8 @@ public class EclipsePlayer : MonoBehaviour {
     private static Texture2D backgroundTexture;
     private static GUIStyle textureStyle;
 
+    public bool showStatusBars = false; // Super bad to do it like this, sorry
+
 
     void Start () {
         cam = GetComponent<Camera>();
@@ -100,7 +102,7 @@ public class EclipsePlayer : MonoBehaviour {
         energyBarLength = (Screen.height / 2) * (energy / (float)maxEnergy);
         if(energy < maxEnergy)
         {
-            energy += Time.deltaTime * 60.0f * fastRegenLeft > 0.0f ? 1.4f : 0.35f; // TODO what are good rates?
+            energy += Time.deltaTime * 60.0f * (fastRegenLeft > 0.0f ? 1.4f : 0.35f);
             if (energy > maxEnergy) energy = maxEnergy;
         }
         if(fastRegenLeft > 0.0f)
@@ -158,9 +160,12 @@ public class EclipsePlayer : MonoBehaviour {
 
         Color energybarColor = Color.blue;
         energybarColor.a = 0.5f;
+        if(showStatusBars)
+        {
+            DrawRect(new Rect(10, Screen.height - 70 - healthBarLength, 20, healthBarLength), healthbarColor);
+            DrawRect(new Rect(40, Screen.height - 70 - energyBarLength, 20, energyBarLength), energybarColor);
+        }
 
-        DrawRect(new Rect(10, Screen.height - 70 - healthBarLength, 30, healthBarLength), healthbarColor);
-        DrawRect(new Rect(50, Screen.height - 70 - energyBarLength, 30, energyBarLength), energybarColor);
         if (health == 0)
         {
             GUIStyle style = new GUIStyle();
