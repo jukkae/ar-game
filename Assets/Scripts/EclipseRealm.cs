@@ -44,30 +44,33 @@ public class EclipseRealm : MonoBehaviour {
 
             if(gameMode == GameMode.SURVIVAL)
             {
-                counter++;
-                if(counter % (60 * timeBetweenCoinSpawns) == 0)
+                if(Time.timeScale != 0.0f) // hrrrr, sorry
                 {
-                    SpawnCoin();
-                }
-                if (IsChestSpawnTime(counter))
-                {
-                    SpawnChest();
-                }
-                if (IsEnemySpawnTime(counter))
-                {
-                    SpawnEnemy();
-                }
-                if (IsRegenPotionSpawnTime(counter))
-                {
-                    SpawnRegenPotion();
-                }
-                if (IsDamagePotionSpawnTime(counter))
-                {
-                    SpawnDamagePotion();
-                }
-                if (IsLongRangePotionSpawnTime(counter))
-                {
-                    SpawnLongRangePotion();
+                    counter++;
+                    if (counter % (60 * timeBetweenCoinSpawns) == 0)
+                    {
+                        SpawnCoin();
+                    }
+                    if (IsChestSpawnTime(counter))
+                    {
+                        SpawnChest();
+                    }
+                    if (IsEnemySpawnTime(counter))
+                    {
+                        SpawnEnemy();
+                    }
+                    if (IsRegenPotionSpawnTime(counter))
+                    {
+                        SpawnRegenPotion();
+                    }
+                    if (IsDamagePotionSpawnTime(counter))
+                    {
+                        SpawnDamagePotion();
+                    }
+                    if (IsLongRangePotionSpawnTime(counter))
+                    {
+                        SpawnLongRangePotion();
+                    }
                 }
             }
         }

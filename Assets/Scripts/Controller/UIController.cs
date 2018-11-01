@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
 using System;
+using System.Collections;
 
 /**<summary> Main controller for UI </summary>*/
 public class UIController : MonoBehaviour
@@ -117,6 +118,29 @@ public class UIController : MonoBehaviour
                 break;
                 
         }
+    }
+
+    public void Help()
+    {
+        StartCoroutine(PauseAfterTime(0.3f)); // Let's all agree that this is a bad way of doing this
+        string helptext =
+            "Welcome to Eclipse Realm!\n" +
+            "Try to find and collect as many coins as possible before the skeletons get you.\n" +
+            "Pick up coins and items by tapping on them when you are close enough.\n" +
+            "Red bar is your health – when that runs out, it's game over.\n" +
+            "Blue bar is your attack energy – it refills on its own.\n" +
+            "Attack enemies by tapping on them.\n\n" +
+            "Good luck!";
+
+
+        DialogManager.ShowAlert("Help", helptext, true,
+            new DialogManager.DialogButton("OK", () => { Time.timeScale = 1.0f; }));
+    }
+
+    IEnumerator PauseAfterTime(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        Time.timeScale = 0.0f;
     }
 
     /**<summary> Called when response is got from image based Location API server </summary>*/
