@@ -54,6 +54,8 @@ The enemies' main controller is `SkeletonEnemyController.cs`. One would expect t
 
 - The obstacle mesh material should ideally occlude virtual objects behind it, while still being invisible in the sense that it would allow the pixels underneath the object to clear to camera feed. The implementation is not complicated, but this was dropped, because if the virtual objects don't line up exactly with the real-world objects, the artefacts caused by invisible occluders will be more distracting than just having completely invisible and transparent walls and floors.
 
+- Sometimes an error message appears in Unity's message log: `'skeleton_animated(Clone)' AnimationEvent 'SetAgentStopped' has no receiver! Are you missing a component?` This is actually not an error, or at least, everything still does work. I was unable to find the source of this. This can just be ignored.
+
 ## Debug Menu Items
 
 Restart App - Reload scene completely
