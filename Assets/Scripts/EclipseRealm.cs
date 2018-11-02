@@ -25,58 +25,48 @@ public class EclipseRealm : MonoBehaviour {
     int numberOfCoinsSpawned = 0;
 
     private enum ReachabilityMode {CAST, PATH}
-    public enum GameMode {TIME, SURVIVAL}
-    public GameMode gameMode = GameMode.SURVIVAL;
     
     public int timeBetweenCoinSpawns;
 
-	void Start () {
+	void Start () { // We don't want to initialize Eclipse Realm in Start(), rather when the game is selected.
 		
 	}
 	
 	void Update () {
 		if(initialized)
         {
-            if(gameMode == GameMode.TIME)
+            if(Time.timeScale != 0.0f) // Only spawn items if the game is not paused
             {
-
-            }
-
-            if(gameMode == GameMode.SURVIVAL)
-            {
-                if(Time.timeScale != 0.0f) // hrrrr, sorry
+                counter++;
+                if (counter % (60 * timeBetweenCoinSpawns) == 0)
                 {
-                    counter++;
-                    if (counter % (60 * timeBetweenCoinSpawns) == 0)
-                    {
-                        SpawnCoin();
-                    }
-                    if (IsChestSpawnTime(counter))
-                    {
-                        SpawnChest();
-                    }
-                    if (IsEnemySpawnTime(counter))
-                    {
-                        SpawnEnemy();
-                    }
-                    if (IsRegenPotionSpawnTime(counter))
-                    {
-                        SpawnRegenPotion();
-                    }
-                    if (IsDamagePotionSpawnTime(counter))
-                    {
-                        SpawnDamagePotion();
-                    }
-                    if (IsLongRangePotionSpawnTime(counter))
-                    {
-                        SpawnLongRangePotion();
-                    }
+                    SpawnCoin();
                 }
-            }
+                if (IsChestSpawnTime(counter))
+                {
+                    SpawnChest();
+                }
+                if (IsEnemySpawnTime(counter))
+                {
+                    SpawnEnemy();
+                }
+                if (IsRegenPotionSpawnTime(counter))
+                {
+                    SpawnRegenPotion();
+                }
+                if (IsDamagePotionSpawnTime(counter))
+                {
+                    SpawnDamagePotion();
+                }
+                if (IsLongRangePotionSpawnTime(counter))
+                {
+                    SpawnLongRangePotion();
+                }
+            }    
         }
 	}
 
-    // Shit. Working shit, but still shit. Sorry.
+    // Shit. Working shit, but still shit.
     private int SpawnCounter = 10 * 60; // Spawn first enemy after 10 seconds
     private int EnemiesSpawned = 0;
     bool IsEnemySpawnTime(int frame)
@@ -100,22 +90,22 @@ public class EclipseRealm : MonoBehaviour {
 
     bool IsRegenPotionSpawnTime(int frame)
     {
-        if (GameObject.FindGameObjectsWithTag("Regen potion").Length > 1) return false;
-        float probability = (1f / 60f) / 15f; // once in 15 seconds on average
+        if (GameObject.FindGameObjectsWithTag("Regen potion").Length > 1) return false; // Only have a maximum of 2 potions of each type at a time
+        float probability = (1f / 60f) / 20f; // once in 20 seconds on average
         return Random.Range(0.0f, 1.0f) < probability;
     }
 
     bool IsDamagePotionSpawnTime(int frame)
     {
         if (GameObject.FindGameObjectsWithTag("Damage potion").Length > 1) return false;
-        float probability = (1f / 60f) / 15f; // once in 15 seconds on average
+        float probability = (1f / 60f) / 20f; // once in 20 seconds on average
         return Random.Range(0.0f, 1.0f) < probability;
     }
 
     bool IsLongRangePotionSpawnTime(int frame)
     {
         if (GameObject.FindGameObjectsWithTag("Long range potion").Length > 1) return false;
-        float probability = (1f / 60f) / 15f; // once in 15 seconds on average
+        float probability = (1f / 60f) / 20f; // once in 20 seconds on average
         return Random.Range(0.0f, 1.0f) < probability;
     }
 
@@ -130,12 +120,9 @@ public class EclipseRealm : MonoBehaviour {
                 obstacleMesh.GetComponent<Renderer>().material = meshDebugMaterial;
         }
 
-        if(gameMode == GameMode.TIME)
-        {
-            PlaceCoins();
-        }
-
+#if UNITY_EDITOR
         MovePlayerToRandomPosition();
+#endif
         GameObject.FindObjectOfType<EclipsePlayer>().showStatusBars = true;
 
         initialized = true;
@@ -158,7 +145,7 @@ public class EclipseRealm : MonoBehaviour {
     void SpawnEnemy()
     {
         Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
-        int timeout = 100;
+        int timeout = 100; // Timeout is necessary especially if the player position ends up outside of play area, within walls, etc.
         while (true)
         {
             timeout--;
@@ -183,7 +170,7 @@ public class EclipseRealm : MonoBehaviour {
             y = areaBounds.min.y + 0.5f;
 
             Vector3 position = new Vector3(x, y, z);
-            if (IsReachable(position, ReachabilityMode.PATH))
+            if (IsReachable(position, ReachabilityMode.PATH)) // PATH is preferred, as it actually checks _reachability_
             {
                 GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.Euler(0, 0, 90));
                 enemy.transform.parent = coinsParent.transform;
@@ -191,7 +178,7 @@ public class EclipseRealm : MonoBehaviour {
             }
             if(timeout <= 0)
             {
-                if (IsReachable(position, ReachabilityMode.CAST))
+                if (IsReachable(position, ReachabilityMode.CAST)) // CAST checks for *a* valid position on a NavMesh, but not necessarily one that's connected to player position
                 {
                     GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.Euler(0, 0, 90));
                     enemy.transform.parent = coinsParent.transform;
@@ -229,7 +216,7 @@ public class EclipseRealm : MonoBehaviour {
                 z = Random.Range(areaBounds.min.z, areaBounds.max.z);
             }
             Vector3 position = new Vector3(x, y, z);
-            if (IsReachable(position, ReachabilityMode.PATH))
+            if (IsReachable(position, ReachabilityMode.PATH)) // See SpawnEnemy for discussion on ReachabilityModes
             {
                 GameObject coin = Instantiate(coinPrefab, position, Quaternion.Euler(0, 0, 90));
                 coin.transform.parent = coinsParent.transform;
@@ -261,7 +248,7 @@ public class EclipseRealm : MonoBehaviour {
             float y = 0.5f;
             float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
             Vector3 position = new Vector3(x, y, z);
-            if (IsReachable(position, ReachabilityMode.PATH))
+            if (IsReachable(position, ReachabilityMode.PATH)) // See SpawnEnemy for discussion on ReachabilityModes
             {
                 GameObject chest = Instantiate(chestPrefab, position, Quaternion.Euler(-90, 0, 0));
                 chest.transform.parent = coinsParent.transform;
@@ -291,7 +278,7 @@ public class EclipseRealm : MonoBehaviour {
             float y = 0.5f;
             float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
             Vector3 position = new Vector3(x, y, z);
-            if (IsReachable(position, ReachabilityMode.PATH))
+            if (IsReachable(position, ReachabilityMode.PATH)) // See SpawnEnemy for discussion on ReachabilityModes
             {
                 GameObject regenPotion = Instantiate(regenPotionPrefab, position, Quaternion.Euler(-45, 0, 0));
                 regenPotion.transform.parent = coinsParent.transform;
@@ -321,7 +308,7 @@ public class EclipseRealm : MonoBehaviour {
             float y = 0.5f;
             float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
             Vector3 position = new Vector3(x, y, z);
-            if (IsReachable(position, ReachabilityMode.PATH))
+            if (IsReachable(position, ReachabilityMode.PATH)) // See SpawnEnemy for discussion on ReachabilityModes
             {
                 GameObject damagePotion = Instantiate(damagePotionPrefab, position, Quaternion.Euler(-45, 0, 0));
                 damagePotion.transform.parent = coinsParent.transform;
@@ -351,7 +338,7 @@ public class EclipseRealm : MonoBehaviour {
             float y = 0.5f;
             float z = Random.Range(areaBounds.min.z, areaBounds.max.z);
             Vector3 position = new Vector3(x, y, z);
-            if (IsReachable(position, ReachabilityMode.PATH))
+            if (IsReachable(position, ReachabilityMode.PATH)) // See SpawnEnemy for discussion on ReachabilityModes
             {
                 GameObject longRangePotion = Instantiate(longRangePotionPrefab, position, Quaternion.Euler(-45, 0, 0));
                 longRangePotion.transform.parent = coinsParent.transform;
@@ -370,7 +357,7 @@ public class EclipseRealm : MonoBehaviour {
         }
     }
 
-    void PlaceCoins()
+    void PlaceCoins() // This function spawns coins on a regular, 1x1 m grid.
     {
         Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
         int numberOfCoins = 0;
@@ -391,11 +378,10 @@ public class EclipseRealm : MonoBehaviour {
 
     void MovePlayerToRandomPosition()
     {
-        Debug.Log("Moving player");
         EclipsePlayer player = FindObjectOfType<EclipsePlayer>();
 
         Bounds areaBounds = obstacleMesh.GetComponent<Renderer>().bounds;
-        while (true)
+        while (true) // This function should only be called in debug, so no timeout
         {
             float x = Random.Range(areaBounds.min.x, areaBounds.max.x);
             float y = areaBounds.min.y + 0.5f;
@@ -403,15 +389,14 @@ public class EclipseRealm : MonoBehaviour {
             Vector3 position = new Vector3(x, y, z);
             if (IsReachable(position, ReachabilityMode.CAST))
             {
-                Debug.Log("Position found: " + position);
                 player.transform.position = position;
                 return;
             }
-            else Debug.Log("Position not good: " + position);
+            //else Debug.Log("Position not good: " + position);
         }
     }
 
-    bool IsReachable(Vector3 position, ReachabilityMode mode = ReachabilityMode.PATH) // TODO quick-and-dirty heuristic, doesn't yet actually check if reachable, only if on open floor
+    bool IsReachable(Vector3 position, ReachabilityMode mode = ReachabilityMode.PATH)
     {
         switch (mode)
         {

@@ -126,20 +126,20 @@ public class EclipsePlayer : MonoBehaviour {
 
     void SetPickableHighlights()
     {
-        List<GameObject> coins = new List<GameObject>(GameObject.FindGameObjectsWithTag("Eclipse Item"));
-        coins.AddRange(GameObject.FindGameObjectsWithTag("Regen potion"));
-        coins.AddRange(GameObject.FindGameObjectsWithTag("Damage potion"));
-        coins.AddRange(GameObject.FindGameObjectsWithTag("Long range potion"));
-        foreach (var coin in coins)
+        List<GameObject> items = new List<GameObject>(GameObject.FindGameObjectsWithTag("Eclipse Item"));
+        items.AddRange(GameObject.FindGameObjectsWithTag("Regen potion"));
+        items.AddRange(GameObject.FindGameObjectsWithTag("Damage potion"));
+        items.AddRange(GameObject.FindGameObjectsWithTag("Long range potion"));
+        foreach (var item in items)
         {
-            if(Vector3.Distance(coin.transform.position, this.transform.position) < (longRangeLeft > 0.0f ? interactRange * 3.0f : interactRange)) // this is bad, i know, sorry
+            if(Vector3.Distance(item.transform.position, this.transform.position) < (longRangeLeft > 0.0f ? interactRange * 3.0f : interactRange)) // this is bad, i know, sorry
             {
-                var e = coin.GetComponent<EclipsePickable>().halo.emission;
+                var e = item.GetComponent<EclipsePickable>().halo.emission;
                 e.enabled = true;
             }
             else
             {
-                var e = coin.GetComponent<EclipsePickable>().halo.emission;
+                var e = item.GetComponent<EclipsePickable>().halo.emission;
                 e.enabled = false;
             }
         }
@@ -204,8 +204,7 @@ public class EclipsePlayer : MonoBehaviour {
 
     public void Die()
     {
-        Time.timeScale = 0f;
-        // TODO
+        Time.timeScale = 0f; // Stop time to stop all animations
     }
 
     /**<summary> Input and control management </summary>*/
@@ -231,7 +230,7 @@ public class EclipsePlayer : MonoBehaviour {
             return;
         position = touch.position;
 #endif
-        if (Physics.Raycast(cam.ScreenPointToRay(position), out hit, longRangeLeft > 0.0f ? interactRange * 3.0f : interactRange, layerMask)) // TODO range scaling?
+        if (Physics.Raycast(cam.ScreenPointToRay(position), out hit, longRangeLeft > 0.0f ? interactRange * 3.0f : interactRange, layerMask))
         {
             GameObject go = hit.collider.gameObject;
             if (go.GetComponent<SkeletonEnemyController>() != null)
@@ -252,7 +251,7 @@ public class EclipsePlayer : MonoBehaviour {
                         score++;
                         break;
                     case EclipsePickable.PickableType.CHEST:
-                        score += 10; // TODO balance!
+                        score += 10;
                         break;
                     case EclipsePickable.PickableType.REGEN_POTION:
                         fastRegenLeft += fastRegenTime;

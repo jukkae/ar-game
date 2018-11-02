@@ -21,6 +21,9 @@ public class SkeletonEnemyController : MonoBehaviour {
     public int health = 5;
     public const int maxHealth = 5;
 
+    public float attackDistance = 2.0f; // meters
+    public float seekDistance = 10.0f; // meters, the distance from which the enemy will start actively seeking towards player
+
     private bool deathAnimation = false; // This is a shit way of fixing shit animation
     private Vector3 positionAtTimeOfDeath;
     private int deathAnimationCountdown = 42; // Like, real shit. BTW, this is yet another empirical constant, not just any ordinary magic number.
@@ -42,13 +45,13 @@ public class SkeletonEnemyController : MonoBehaviour {
     }
 	
 	void Update () {
-        if (deathAnimation)
+        if (deathAnimation) // If the enemy is currently dying, ie. the animation is still playing
         {
-            if(deathAnimationCountdown > 0)
+            if(deathAnimationCountdown > 0) // For the early parts of animation, the skeleton's feet are still on the floor and we just wait
             {
                 deathAnimationCountdown--;
             }
-            else
+            else // But when the feet start to rise off the floor in the animation, we manually force the skeleton model to drop down
             {
                 if ((positionAtTimeOfDeath.y - transform.position.y) < 0.614) // empirical constant
                 {
@@ -61,32 +64,29 @@ public class SkeletonEnemyController : MonoBehaviour {
                 }
             }
         }
-        if ( aiState == EnemyAiState.DEAD)
+        if (aiState == EnemyAiState.DEAD) // When the enemy is dead, we disable all movement
         {
             agent.velocity = Vector3.zero;
             agent.isStopped = true;
             return;
         }
-        if(!(animator.GetCurrentAnimatorStateInfo(0).IsName("Hit") ||
-             animator.GetCurrentAnimatorStateInfo(0).IsName("Death")))
-        {
-            //agent.isStopped = false;
-        }
-        if ((player.transform.position - this.transform.position).magnitude < 1.5f)
+        if ((player.transform.position - this.transform.position).magnitude < attackDistance) // If we're within attack range
         {
             aiState = EnemyAiState.ATTACK;
-            SetTarget(this.transform.position);
-            animator.SetTrigger("Attack");
+            SetTarget(this.transform.position); // Stay in place
+            animator.SetTrigger("Attack"); // And attack
         }
-        else if((player.transform.position - this.transform.position).magnitude < 10.0f)
+        else if((player.transform.position - this.transform.position).magnitude < seekDistance) // If we're close enough
         {
             aiState = EnemyAiState.SEEK_PLAYER;
-            SetTarget(player.transform.position);
+            SetTarget(player.transform.position); // Seek to player
         }
-        else
+        else // If we're too far away, just pick a destination at random
         {
             aiState = EnemyAiState.WANDER;
         }
+
+        // Smoothen animation parameters so that blending between animations based on speed gets smoothed out
         Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
 
         // Map 'worldDeltaPosition' to local space
@@ -105,22 +105,15 @@ public class SkeletonEnemyController : MonoBehaviour {
         bool shouldMove = velocity.magnitude > 0.5f && agent.remainingDistance > agent.radius;
 
         // Update animation parameters
-        //animator.SetBool("move", shouldMove);
-        //animator.SetFloat("velx", velocity.x);
-        //animator.SetFloat("vely", velocity.y);
-        //Debug.Log("Velocity:" + velocity + ", magnitude: " + velocity.magnitude);
         float dampTime = 0.1f;
         animator.SetFloat("Velocity", velocity.magnitude * (4.0f / 3.0f), dampTime, Time.deltaTime);
 
-        //GetComponent<LookAt>().lookAtTargetPosition = agent.steeringTarget + transform.forward;
-
-        if (Input.GetKeyDown(KeyCode.Q)) TakeDamage(1); // TODO for debugging, remove
-        
+        //GetComponent<LookAt>().lookAtTargetPosition = agent.steeringTarget + transform.forward;        
     }
 
     public void TakeDamage(int damage)
     {
-        if(aiState != EnemyAiState.DEAD)
+        if(aiState != EnemyAiState.DEAD) // Only take damage if not dead
         {
             AudioSource.PlayClipAtPoint(damageSound, transform.position);
             aiState = EnemyAiState.TAKE_HIT;
@@ -137,7 +130,7 @@ public class SkeletonEnemyController : MonoBehaviour {
         AudioSource.PlayClipAtPoint(deathSound, transform.position);
         animator.SetTrigger("Die");
         aiState = EnemyAiState.DEAD;
-        deathAnimation = true; // yeh i know i probably don't need both of these
+        deathAnimation = true; // yeh i know i probably don't need both of these anymore
         positionAtTimeOfDeath = transform.position;
         //CapsuleCollider c = this.GetComponent<CapsuleCollider>();
         //Vector3 center = c.center;
@@ -156,7 +149,7 @@ public class SkeletonEnemyController : MonoBehaviour {
     {
         AudioSource.PlayClipAtPoint(attackSound, transform.position);
         aiState = EnemyAiState.ATTACK;
-        if ((player.transform.position - this.transform.position).magnitude < 1.5f)
+        if ((player.transform.position - this.transform.position).magnitude < attackDistance)
         {
             player.TakeDamage(5, this.gameObject);
         }
