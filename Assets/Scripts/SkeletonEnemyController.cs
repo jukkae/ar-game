@@ -92,7 +92,7 @@ public class SkeletonEnemyController : MonoBehaviour {
         // Map 'worldDeltaPosition' to local space
         float dx = Vector3.Dot(transform.right, worldDeltaPosition);
         float dy = Vector3.Dot(transform.forward, worldDeltaPosition);
-        Vector2 deltaPosition = new Vector2(dx, dy);
+        Vector2 deltaPosition = new Vector2(dx, dy); // to make skeletons move slower, clamp this to shorter value
 
         // Low-pass filter the deltaMove
         float smooth = Mathf.Min(1.0f, Time.deltaTime / 0.15f);
